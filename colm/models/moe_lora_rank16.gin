@@ -1,0 +1,12 @@
+import src.models
+import src.models.addons
+import src.models.manipulations
+import src.models.custom_modules.lora
+
+M/MODEL/modify_with_lora:
+    lora_modules = ".*SelfAttention|.*EncDecAttention|.*DenseReluDense"
+    lora_layers = "q|k|v|o|w.*"
+
+M/MODEL/LoRALinear:
+    d_bottleneck = 16
+    init_scale = 0.01

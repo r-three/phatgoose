@@ -1,0 +1,31 @@
+import src.models
+import src.procedures
+import src.procedures.utils
+import src.models.addons
+import src.models.manipulations
+import src.utils.logging
+
+P/EVALUATE/build.cls = @Evaluator
+P/EVALUATE/Evaluator:
+    model = "M/MODEL"
+    datasets = "D/${DATASET}/EVAL"
+    save_results = @save_results
+    analysis_processors = [@RoutingDistribution(), @EntropyDistribution()]
+
+P/EVALUATE/GEN/Evaluator:
+    datasets = ["D/WIKI_AUTO/EVAL", "D/ELM_GIGAWORD/EVAL", "D/HAIKU/EVAL", "D/COVIDQA/EVAL", "D/ELI5/EVAL", "D/EMDG/EVAL", "D/eSNLI/EVAL", "D/TWITTER/EVAL"]
+
+save_results.save_dir = "exp_out/${EXP_NAME}"
+RoutingDistribution.save_dir = "exp_out/${EXP_NAME}/routing_distribution"
+EntropyDistribution.save_dir = "exp_out/${EXP_NAME}/entropy_distribution"
+
+M/MODEL/Model.trainable_params = "none"
+M/MODEL/load_weights.weight_path = "exp_out/${EXP_NAME}/best.pt"
+M/MODEL/Model.init_moma_calls = [@M/MODEL/ENCODER/watch_hiddens, @M/MODEL/DECODER/watch_hiddens, @M/MODEL/ENCODER/make_moe, @M/MODEL/DECODER/make_moe, @M/MODEL/load_weights]
+
+M/MODEL/ExtendableAddon.separate_experts = True
+
+main:
+    procedure_exec_order=["P/EVALUATE/GEN"]
+    exp_name="${EXP_NAME}"
+    global_seed = 42

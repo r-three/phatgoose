@@ -1,0 +1,18 @@
+include 'colm/experiments/train.gin'
+
+P/TRAIN/Trainer:
+    datasets = "D/${DATASET}/TRAIN"
+    batcher = @P/TRAIN/SingleTaskBatcher()
+    num_steps = 1000
+    validation_step_interval = 100
+    gradient_accumulation_factor = 32
+
+P/TRAIN/SingleTaskBatcher:
+    shuffle = True
+    drop_last = True
+    num_workers = 8
+
+P/EVALUATE/Evaluator:
+    datasets = "D/${DATASET}/EVAL"
+
+M/MODEL/Model.init_moma_calls = [@M/MODEL/modify_with_lora]

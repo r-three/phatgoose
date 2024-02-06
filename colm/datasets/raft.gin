@@ -1,0 +1,12 @@
+import src.data.raft
+
+D/P3HSWAG/HSwagDataset:
+    max_pretemplate_examples_per_dataset = 500_000
+    dataset_path = ["huggingface", "hellaswag"]
+
+D/P3HSWAG/EVAL/build.cls = @HSwagDataset
+D/P3HSWAG/EVAL/HSwagDataset:
+    template_selection = "all"
+    dataset_split = "validation"
+    dataset_batch_size = 1
+    metrics = ["accuracy"]

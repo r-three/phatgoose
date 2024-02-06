@@ -1,0 +1,7 @@
+import src.utils.logging
+
+logger_setup:
+    starting_step = 0
+    logging_dir = "wandb"
+
+main.logging_backend = "wandb"

@@ -1,0 +1,48 @@
+import src.models
+import src.models.addons
+import src.models.manipulations
+
+M/MODEL/ENCODER/ExposeHidden.reduction_method = None
+M/MODEL/DECODER/ExposeHidden.reduction_method = "masked_mean"
+M/MODEL/ENCODER/ExposeHidden.position = "before"
+M/MODEL/DECODER/ExposeHidden.position = "after"
+
+M/MODEL/watch_hiddens:
+    prepare_mask_modules = "encoder"
+    prepare_mask_addon_name = "prepare_mask"
+
+M/MODEL/ENCODER/watch_hiddens:
+    expose_hidden_modules = "encoder_linear"
+    expose_hiddens_addon_name = "pre_expose_hiddens"
+
+M/MODEL/DECODER/watch_hiddens:
+    expose_hidden_modules = "encoder_final_ln"
+    expose_hiddens_addon_name = "post_expose_hiddens"
+
+M/MODEL/FFNExperts:
+    non_linearity = "identity"
+    position = "beside"
+    d_in = "host_module.in_features"
+    d_out = "host_module.out_features"
+    divide_by_d_bottleneck = True
+    d_bottleneck = 16
+
+M/MODEL/make_moe:
+    expert_class = "ffn"
+    router_addon_name = "router"
+    expert_addon_name = "expert_lora"
+
+M/MODEL/ENCODER/make_moe:
+    expert_modules = "encoder_linear"
+    router_modules = "encoder_linear"
+    expose_hiddens_addon_name = "pre_expose_hiddens"
+    router_addon_name = "router"
+
+M/MODEL/DECODER/make_moe:
+    expert_modules = "decoder_linear"
+    router_modules = "decoder"
+    expose_hiddens_addon_name = "post_expose_hiddens"
+    router_addon_name = "router"
+
+M/MODEL/ENCODER/Router.d_router="host_module.in_features"
+M/MODEL/DECODER/Router.d_router=2048

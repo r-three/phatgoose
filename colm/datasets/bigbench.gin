@@ -1,0 +1,411 @@
+import src.data.bigbench
+
+D/InterfaceInfo:
+    interface = "lm"
+    length_normalization = True
+    multiple_choice_loss = 1
+    unlikelihood_loss = 1
+    num_beams = 1
+
+D/BigBenchDataset:
+    max_length = 512
+    batch_size = 32
+    split = "train_validation"
+    metrics = ["accuracy"]
+
+D/BigBenchSampleDataset:
+    batch_size = 32
+    max_length = 512
+
+#-------BigBench Hard-------#
+
+D/BBBOOLEANEXPRESSIONS/BigBenchSampleDataset:
+    dataset_path = ["huggingface", "lukaemon/bbh", "boolean_expressions"]
+
+D/BBBOOLEANEXPRESSIONS/EVAL/build.cls = @BigBenchSampleDataset
+D/BBBOOLEANEXPRESSIONS/EVAL/InterfaceInfo.interface = "mc"
+D/BBBOOLEANEXPRESSIONS/EVAL/BigBenchSampleDataset:
+    answer_choices = ["True", "False"]
+    split = "test"
+    metrics = ["accuracy"]
+
+
+D/BBCAUSALJUDGEMENT/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "causal_judgment"]
+
+D/BBCAUSALJUDGEMENT/EVAL/build.cls = @BigBenchDataset
+D/BBCAUSALJUDGEMENT/EVAL/InterfaceInfo.interface = "mc"
+D/BBCAUSALJUDGEMENT/EVAL/BigBenchDataset.batch_size = 16
+
+D/BBDATEUNDERSTANDING/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "date_understanding"]
+
+D/BBDATEUNDERSTANDING/EVAL/build.cls = @BigBenchDataset
+D/BBDATEUNDERSTANDING/EVAL/InterfaceInfo.interface = "mc"
+
+D/BBDISAMBIGUATIONQA/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "disambiguation_qa"]
+
+D/BBDISAMBIGUATIONQA/EVAL/build.cls = @BigBenchDataset
+D/BBDISAMBIGUATIONQA/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBDYCKLANGUAGES/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "dyck_languages"]
+
+D/BBDYCKLANGUAGES/EVAL/build.cls = @BigBenchDataset
+D/BBDYCKLANGUAGES/EVAL/InterfaceInfo.interface = "mc"
+D/BBDYCKLANGUAGES/EVAL/BigBenchDataset.batch_size = 1
+
+
+D/BBFORMALFALLACIES/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "formal_fallacies_syllogisms_negation"]
+
+D/BBFORMALFALLACIES/EVAL/build.cls = @BigBenchDataset
+D/BBFORMALFALLACIES/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBGEOMETRICSHAPES/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "geometric_shapes"]
+
+D/BBGEOMETRICSHAPES/EVAL/build.cls = @BigBenchDataset
+D/BBGEOMETRICSHAPES/EVAL/InterfaceInfo.interface = "mc"
+D/BBGEOMETRICSHAPES/EVAL/BigBenchDataset:
+    metrics = ["accuracy_multiple_ans"]
+    batch_size = 8
+
+
+D/BBHYPERBATON/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "hyperbaton"]
+
+D/BBHYPERBATON/EVAL/build.cls = @BigBenchDataset
+D/BBHYPERBATON/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBLOGICALDEDUCTION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "logical_deduction"]
+
+D/BBLOGICALDEDUCTION/EVAL/build.cls = @BigBenchDataset
+D/BBLOGICALDEDUCTION/EVAL/InterfaceInfo.interface = "mc"
+D/BBLOGICALDEDUCTION/EVAL/BigBenchDataset.batch_size = 8
+
+D/BBMOVIERECOMMENDATION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "movie_recommendation"]
+
+D/BBMOVIERECOMMENDATION/EVAL/build.cls = @BigBenchDataset
+D/BBMOVIERECOMMENDATION/EVAL/InterfaceInfo.interface = "mc"
+D/BBMOVIERECOMMENDATION/EVAL/BigBenchDataset.batch_size = 16
+
+
+D/BBMULTISTEPARITHMETICTWO/BigBenchSampleDataset:
+    dataset_path = ["huggingface", "lukaemon/bbh", "multistep_arithmetic_two"]
+
+D/BBMULTISTEPARITHMETICTWO/EVAL/build.cls = @BigBenchSampleDataset
+D/BBMULTISTEPARITHMETICTWO/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/BBMULTISTEPARITHMETICTWO/EVAL/BigBenchSampleDataset:
+    split = "test"
+    metrics = ["exact_match"]
+
+
+D/BBNAVIGATE/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "navigate"]
+
+D/BBNAVIGATE/EVAL/build.cls = @BigBenchDataset
+D/BBNAVIGATE/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBOBJECTCOUNTING/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "object_counting"]
+
+D/BBOBJECTCOUNTING/EVAL/build.cls = @BigBenchDataset
+D/BBOBJECTCOUNTING/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/BBOBJECTCOUNTING/EVAL/BigBenchDataset:
+    metrics = ["exact_match_multiple_ans"]
+
+
+D/BBPENGUINSINATABLE/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "penguins_in_a_table"]
+
+D/BBPENGUINSINATABLE/EVAL/build.cls = @BigBenchDataset
+D/BBPENGUINSINATABLE/EVAL/InterfaceInfo.interface = "mc"
+D/BBPENGUINSINATABLE/EVAL/BigBenchDataset.batch_size = 16
+
+
+D/BBREASONINGABOUTCOLOREDOBJECTS/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "reasoning_about_colored_objects"]
+
+D/BBREASONINGABOUTCOLOREDOBJECTS/EVAL/build.cls = @BigBenchDataset
+D/BBREASONINGABOUTCOLOREDOBJECTS/EVAL/InterfaceInfo.interface = "mc"
+D/BBREASONINGABOUTCOLOREDOBJECTS/EVAL/BigBenchDataset:
+    metrics = ["accuracy_multiple_ans"]
+    batch_size = 4
+
+
+D/BBRUINNAMES/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "ruin_names"]
+
+D/BBRUINNAMES/EVAL/build.cls = @BigBenchDataset
+D/BBRUINNAMES/EVAL/InterfaceInfo.interface = "mc"
+D/BBRUINNAMES/EVAL/BigBenchDataset.batch_size = 16
+
+
+D/BBSALIENTTRANSLATIONERRORDETECTION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "salient_translation_error_detection"]
+
+D/BBSALIENTTRANSLATIONERRORDETECTION/EVAL/build.cls = @BigBenchDataset
+D/BBSALIENTTRANSLATIONERRORDETECTION/EVAL/InterfaceInfo.interface = "mc"
+D/BBSALIENTTRANSLATIONERRORDETECTION/EVAL/BigBenchDataset.batch_size = 4
+
+
+D/BBSNARKS/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "snarks"]
+
+D/BBSNARKS/EVAL/build.cls = @BigBenchDataset
+D/BBSNARKS/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBSPORTSUNDERSTANDING/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "sports_understanding"]
+
+D/BBSPORTSUNDERSTANDING/EVAL/build.cls = @BigBenchDataset
+D/BBSPORTSUNDERSTANDING/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBTEMPORALSEQUENCES/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "temporal_sequences"]
+
+D/BBTEMPORALSEQUENCES/EVAL/build.cls = @BigBenchDataset
+D/BBTEMPORALSEQUENCES/EVAL/InterfaceInfo.interface = "mc"
+D/BBTEMPORALSEQUENCES/EVAL/BigBenchDataset.batch_size = 16
+
+
+D/BBTRACKINGSHUFFLEDOBJECTS/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "tracking_shuffled_objects"]
+
+D/BBTRACKINGSHUFFLEDOBJECTS/EVAL/build.cls = @BigBenchDataset
+D/BBTRACKINGSHUFFLEDOBJECTS/EVAL/InterfaceInfo.interface = "mc"
+D/BBTRACKINGSHUFFLEDOBJECTS/EVAL/BigBenchDataset.batch_size = 8
+
+
+D/BBWEBOFLIES/BigBenchSampleDataset:
+    dataset_path = ["huggingface", "lukaemon/bbh", "web_of_lies"]
+
+D/BBWEBOFLIES/EVAL/build.cls = @BigBenchSampleDataset
+D/BBWEBOFLIES/EVAL/InterfaceInfo.interface = "mc"
+D/BBWEBOFLIES/EVAL/BigBenchSampleDataset:
+    answer_choices = ["Yes", "No"]
+    split = "test"
+    metrics = ["accuracy"]
+
+D/BBWORDSORTING/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "word_sorting"]
+
+D/BBWORDSORTING/EVAL/build.cls = @BigBenchDataset
+D/BBWORDSORTING/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/BBWORDSORTING/EVAL/BigBenchDataset:
+    split = "train_validation"
+    metrics = ["exact_match"]
+
+#-------BigBenchLite-------#
+
+D/BBAUTODEBUGGING/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "auto_debugging"]
+
+D/BBAUTODEBUGGING/EVAL/build.cls = @BigBenchDataset
+D/BBAUTODEBUGGING/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+D/BBAUTODEBUGGING/EVAL/BigBenchDataset:
+    split = "train_validation"
+    metrics = ["exact_match_multiple_ans"]
+
+
+D/BBBBQLITEJSON/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "bbq_lite_json"]
+
+D/BBBBQLITEJSON/EVAL/build.cls = @BigBenchDataset
+D/BBBBQLITEJSON/EVAL/InterfaceInfo.interface = "mc"
+D/BBBBQLITEJSON/EVAL/BigBenchDataset.batch_size = 16
+
+
+D/BBCODELINEDESCRIPTION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "code_line_description"]
+
+D/BBCODELINEDESCRIPTION/EVAL/build.cls = @BigBenchDataset
+D/BBCODELINEDESCRIPTION/EVAL/InterfaceInfo.interface = "mc"
+D/BBCODELINEDESCRIPTION/EVAL/BigBenchDataset.batch_size = 16
+
+
+D/BBCONCEPTUALCOMBINATIONS/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "conceptual_combinations"]
+
+D/BBCONCEPTUALCOMBINATIONS/EVAL/build.cls = @BigBenchDataset
+D/BBCONCEPTUALCOMBINATIONS/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBCONLANGTRANSLATION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "conlang_translation"]
+
+D/BBCONLANGTRANSLATION/EVAL/build.cls = @BigBenchDataset
+D/BBCONLANGTRANSLATION/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/BBCONLANGTRANSLATION/EVAL/BigBenchDataset:
+    metrics = ["rouge"]
+
+
+D/BBEMOJIMOVIE/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "emoji_movie"]
+
+D/BBEMOJIMOVIE/EVAL/build.cls = @BigBenchDataset
+D/BBEMOJIMOVIE/EVAL/InterfaceInfo.interface = "mc"
+
+
+# Formal fallacies is present in bigbench hard as well
+
+D/BBHINDUKNOWLEDGE/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "hindu_knowledge"]
+
+D/BBHINDUKNOWLEDGE/EVAL/build.cls = @BigBenchDataset
+D/BBHINDUKNOWLEDGE/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBKNOWNUNKNOWNS/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "known_unknowns"]
+
+D/BBKNOWNUNKNOWNS/EVAL/build.cls = @BigBenchDataset
+D/BBKNOWNUNKNOWNS/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBLANGUAGEIDENTIFICATION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "language_identification"]
+
+D/BBLANGUAGEIDENTIFICATION/EVAL/build.cls = @BigBenchDataset
+D/BBLANGUAGEIDENTIFICATION/EVAL/InterfaceInfo.interface = "mc"
+D/BBLANGUAGEIDENTIFICATION/EVAL/BigBenchDataset.batch_size = 2
+
+
+D/BBLINGUISTICSPUZZLES/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "linguistics_puzzles"]
+
+D/BBLINGUISTICSPUZZLES/EVAL/build.cls = @BigBenchDataset
+D/BBLINGUISTICSPUZZLES/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/BBLINGUISTICSPUZZLES/EVAL/BigBenchDataset:
+    metrics = ["exact_match"]
+
+
+D/BBLOGICGRIDPUZZLE/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "logic_grid_puzzle"]
+
+D/BBLOGICGRIDPUZZLE/EVAL/build.cls = @BigBenchDataset
+D/BBLOGICGRIDPUZZLE/EVAL/InterfaceInfo.interface = "mc"
+D/BBLOGICGRIDPUZZLE/EVAL/BigBenchDataset.batch_size = 4
+
+# logical detection already present in bigbench hard
+
+#  misconceptions_russian does not have inputs, handle this
+D/BBMISCONCEPTIONSRUSSIAN/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "misconceptions_russian"]
+
+D/BBMISCONCEPTIONSRUSSIAN/EVAL/build.cls = @BigBenchDataset
+D/BBMISCONCEPTIONSRUSSIAN/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBNOVELCONCEPTS/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "novel_concepts"]
+
+D/BBNOVELCONCEPTS/EVAL/build.cls = @BigBenchDataset
+D/BBNOVELCONCEPTS/EVAL/InterfaceInfo.interface = "mc"
+D/BBNOVELCONCEPTS/EVAL/BigBenchDataset:
+    metrics = ["accuracy_multiple_ans"]
+    batch_size = 16
+
+
+D/BBOPERATORS/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "operators"]
+
+D/BBOPERATORS/EVAL/build.cls = @BigBenchDataset
+D/BBOPERATORS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+
+D/BBOPERATORS/EVAL/BigBenchDataset:
+    metrics = ["exact_match"]
+
+# look for target field in the dataset
+D/BBPARSINLUREADINGCOMPREHENSION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "parsinlu_reading_comprehension"]
+
+D/BBPARSINLUREADINGCOMPREHENSION/EVAL/build.cls = @BigBenchDataset
+D/BBPARSINLUREADINGCOMPREHENSION/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+
+D/BBPARSINLUREADINGCOMPREHENSION/EVAL/BigBenchDataset:
+    metrics = ["exact_match_multiple_ans"]
+
+
+D/BBPLAYDIALOGSAMEORDIFFERENT/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "play_dialog_same_or_different"]
+
+D/BBPLAYDIALOGSAMEORDIFFERENT/EVAL/build.cls = @BigBenchDataset
+D/BBPLAYDIALOGSAMEORDIFFERENT/EVAL/InterfaceInfo.interface = "mc"
+D/BBPLAYDIALOGSAMEORDIFFERENT/EVAL/BigBenchDataset.batch_size = 16
+
+
+D/BBREPEATCOPYLOGIC/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "repeat_copy_logic"]
+
+D/BBREPEATCOPYLOGIC/EVAL/build.cls = @BigBenchDataset
+D/BBREPEATCOPYLOGIC/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/BBREPEATCOPYLOGIC/EVAL/BigBenchDataset:
+    metrics = ["exact_match"]
+
+
+D/BBSTRANGESTORIES/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "strange_stories"]
+
+D/BBSTRANGESTORIES/EVAL/build.cls = @BigBenchDataset
+D/BBSTRANGESTORIES/EVAL/InterfaceInfo.interface = "mc"
+D/BBSTRANGESTORIES/EVAL/BigBenchDataset.batch_size = 16
+
+# double check this dataset as target string is larger size than answer choices (find label still should work?)
+D/BBSTRATEGYQA/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "strategyqa"]
+
+D/BBSTRATEGYQA/EVAL/build.cls = @BigBenchDataset
+D/BBSTRATEGYQA/EVAL/InterfaceInfo.interface = "mc"
+
+
+D/BBSYMBOLINTERPRETATION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "symbol_interpretation"]
+
+D/BBSYMBOLINTERPRETATION/EVAL/build.cls = @BigBenchDataset
+D/BBSYMBOLINTERPRETATION/EVAL/InterfaceInfo.interface = "mc"
+D/BBSYMBOLINTERPRETATION/EVAL/BigBenchDataset.batch_size = 8
+
+
+D/BBVITAMINCFACTVERIFICATION/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "vitaminc_fact_verification"]
+
+D/BBVITAMINCFACTVERIFICATION/EVAL/build.cls = @BigBenchDataset
+D/BBVITAMINCFACTVERIFICATION/EVAL/InterfaceInfo.interface = "mc"
+D/BBVITAMINCFACTVERIFICATION/EVAL/BigBenchDataset.batch_size = 8
+
+
+D/BBWINOWHY/BigBenchDataset:
+    dataset_path = ["huggingface", "tasksource/bigbench", "winowhy"]
+
+D/BBWINOWHY/EVAL/build.cls = @BigBenchDataset
+D/BBWINOWHY/EVAL/InterfaceInfo.interface = "mc"

@@ -1,0 +1,20 @@
+import src.models
+
+M/MODEL/hf_torch_model:
+    model_class = "seq2seq_lm"
+    model_name_or_path = "google/t5-large-lm-adapt"
+
+M/MODEL/hf_tokenizer:
+    model_name_or_path = "google/t5-large-lm-adapt"
+
+M/MODEL/InterfaceMixin:
+    language_modeling_interface = "lm_4encdec"
+    generation_interface = "gen_4encdec"
+    mutiple_choice_interface = "mc_byppl_4encdec"
+
+M/MODEL/build.cls = @Model
+M/MODEL/Model:
+    torch_model = @hf_torch_model()
+    tokenizer = @hf_tokenizer()
+    trainable_params = "all"
+    mix_precision = "bf16"

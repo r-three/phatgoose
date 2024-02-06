@@ -1,0 +1,63 @@
+import src.models
+import src.procedures
+import src.procedures.utils
+import src.models.addons
+import src.models.manipulations
+import src.utils.logging
+
+P/TRAIN/build.cls = @Trainer
+P/TRAIN/Trainer:
+    model = "M/MODEL"
+    validate_procedure = "P/EVALUATE"
+    report_step_interval = 10
+    save_model_moma_calls = [
+        @MOMA/TRAIN/save_weights,
+    ]
+    report_moma_calls = []
+    finish_moma_calls = [
+        @MOMA/DONE/save_weights,
+        @MOMA/DONE/load_weights,
+    ]
+MOMA/save_weights.should_save_to_gcp = True
+MOMA/save_weights.save_params = ".*expert.*"
+MOMA/TRAIN/save_weights:
+    add_global_step = True
+    weight_path = "exp_out/${EXP_NAME}/weights.pt"
+MOMA/DONE/save_weights.weight_path = "exp_out/${EXP_NAME}/finish.pt"
+MOMA/DONE/load_weights.weight_path = "exp_out/${EXP_NAME}/best.pt"
+
+P/TRAIN/get_optimizer:
+    optimizer_class = "adamw"
+    learning_rate = 5e-3
+    weight_decay = 0.0
+    scale_parameter = 1.0
+    relative_step = False
+
+P/TRAIN/get_scheduler:
+    scheduler_class = "constant_with_warmup"
+    warmup_ratio = 0.06
+
+P/EVALUATE/build.cls = @Evaluator
+P/EVALUATE/Evaluator:
+    model = "M/MODEL"
+    save_results = @save_results
+    analysis_processors = []
+    better_model_moma_calls = [
+        @MOMA/BEST/save_weights,
+    ]
+P/EVALUATE/HELDOUT/Evaluator:
+    datasets = ["D/P3RTE/EVAL", "D/P3HSWAG/EVAL", "D/P3COPA/EVAL", "D/P3WIC/EVAL", "D/P3WINOGRANDE/EVAL", "D/P3CB/EVAL", "D/P3STORYCLOZE/EVAL", "D/P3ANLI/R1/EVAL", "D/P3ANLI/R2/EVAL", "D/P3ANLI/R3/EVAL", "D/P3WSCFIXED/EVAL"]
+    better_model_moma_calls = []
+MOMA/BEST/save_weights:
+    weight_path = "exp_out/${EXP_NAME}/best.pt"
+save_results.save_dir = "exp_out/${EXP_NAME}"
+
+M/MODEL/Model.trainable_params = "expert"
+M/MODEL/Model.init_moma_calls = [@M/MODEL/ENCODER/watch_hiddens, @M/MODEL/DECODER/watch_hiddens, @M/MODEL/ENCODER/make_moe, @M/MODEL/DECODER/make_moe, @M/MODEL/extend_moe]
+
+M/MODEL/ExtendableAddon.separate_experts = True
+
+main:
+    procedure_exec_order = ["P/EVALUATE", "P/TRAIN", "P/EVALUATE", "P/EVALUATE/HELDOUT"]
+    exp_name = "${EXP_NAME}"
+    global_seed = 42

@@ -1,0 +1,2142 @@
+import src.data.flat
+
+D/InterfaceInfo:
+    interface = "lm"
+    length_normalization = True
+    multiple_choice_loss = 1
+    unlikelihood_loss = 1
+    num_beams = 1
+
+D/FlanDataset:
+    max_length = 512
+    batch_size = 32
+    input_field = "inputs"
+    target_field = "targets"
+
+#-----------FLAN2021----------------#
+D/FLAN2021AI2ARCEASY/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "ai2_arc", "ARC-Easy:1.0.0"]
+
+D/FLAN2021AI2ARCEASY/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021AI2ARCEASY/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021AI2ARCEASY/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021AI2ARCEASY/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/FLAN2021AI2ARCEASY/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021AI2ARCCHALLENGE/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "ai2_arc", "ARC-Challenge:1.0.0"]
+
+D/FLAN2021AI2ARCCHALLENGE/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021AI2ARCCHALLENGE/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021AI2ARCCHALLENGE/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021AI2ARCCHALLENGE/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/FLAN2021AI2ARCCHALLENGE/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021ALGEBRALINEAR1D/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "algebra__linear_1d:1.0.0"]
+
+D/FLAN2021ALGEBRALINEAR1D/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021ALGEBRALINEAR1D/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021ALGEBRALINEAR1D/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021ALGEBRALINEAR1D/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/FLAN2021ALGEBRALINEAR1D/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021BOOLQ/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "bool_q:1.0.0"]
+
+D/FLAN2021BOOLQ/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021BOOLQ/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021BOOLQ/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021BOOLQ/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/FLAN2021BOOLQ/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021COQA/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "coqa:1.0.0"]
+
+D/FLAN2021COQA/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021COQA/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021COQA/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021COQA/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/FLAN2021COQA/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021DEFPRONOUNRESOLUTION/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "definite_pronoun_resolution:1.1.0"]
+
+D/FLAN2021DEFPRONOUNRESOLUTION/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021DEFPRONOUNRESOLUTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021DEFPRONOUNRESOLUTION/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021DEFPRONOUNRESOLUTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/FLAN2021DEFPRONOUNRESOLUTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021DROP/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "drop:2.0.0"]
+
+D/FLAN2021DROP/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021DROP/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021DROP/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021DROP/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/FLAN2021DROP/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021FIXPUNCT/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "fix_punct"]
+
+D/FLAN2021FIXPUNCT/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021FIXPUNCT/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021FIXPUNCT/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021FIXPUNCT/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/FLAN2021FIXPUNCT/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GEMDART/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "gem", "dart:1.1.0"]
+
+D/FLAN2021GEMDART/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GEMDART/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GEMDART/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GEMDART/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+
+D/FLAN2021GEMDART/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GEME2ENLG/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "gem", "e2e_nlg:1.1.0"]
+
+D/FLAN2021GEME2ENLG/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GEME2ENLG/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GEME2ENLG/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GEME2ENLG/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021GEME2ENLG/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GEMWEBNLGEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "gem", "web_nlg_en:1.1.0"]
+
+D/FLAN2021GEMWEBNLGEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GEMWEBNLGEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GEMWEBNLGEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GEMWEBNLGEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+
+D/FLAN2021GEMWEBNLGEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GEMWIKILINGUAEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "gem", "wiki_lingua_english_en:1.1.0"]
+
+D/FLAN2021GEMWIKILINGUAEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GEMWIKILINGUAEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GEMWIKILINGUAEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GEMWIKILINGUAEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021GEMWIKILINGUAEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GLUESST2/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "glue" , "sst2:2.0.0"]
+
+D/FLAN2021GLUESST2/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GLUESST2/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GLUESST2/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GLUESST2/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021GLUESST2/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GLUECOLA/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "glue" , "cola:2.0.0"]
+
+D/FLAN2021GLUECOLA/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GLUECOLA/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GLUECOLA/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GLUECOLA/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/FLAN2021GLUECOLA/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GLUEMNLI/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "glue" , "mnli:2.0.0"]
+
+D/FLAN2021GLUEMNLI/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GLUEMNLI/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GLUEMNLI/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GLUEMNLI/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/FLAN2021GLUEMNLI/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GLUEQNLI/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "glue" , "qnli:2.0.0"]
+
+D/FLAN2021GLUEQNLI/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GLUEQNLI/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GLUEQNLI/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GLUEQNLI/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/FLAN2021GLUEQNLI/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GLUESTSB/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "glue" , "stsb:2.0.0"]
+
+D/FLAN2021GLUESTSB/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GLUESTSB/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GLUESTSB/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GLUESTSB/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021GLUESTSB/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021GLUEWNLI/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "glue" , "wnli:2.0.0"]
+
+D/FLAN2021GLUEWNLI/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021GLUEWNLI/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021GLUEWNLI/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021GLUEWNLI/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+
+D/FLAN2021GLUEWNLI/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021LAMBADA/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "lambada:1.0.0"]
+
+D/FLAN2021LAMBADA/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021LAMBADA/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021LAMBADA/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021LAMBADA/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+
+D/FLAN2021LAMBADA/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021NATURALQUESTIONSOPEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "natural_questions_open:1.0.0"]
+
+D/FLAN2021NATURALQUESTIONSOPEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021NATURALQUESTIONSOPEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021NATURALQUESTIONSOPEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021NATURALQUESTIONSOPEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+
+D/FLAN2021NATURALQUESTIONSOPEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021NEWSROOM/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "newsroom:1.0.0"]
+
+D/FLAN2021NEWSROOM/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021NEWSROOM/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021NEWSROOM/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021NEWSROOM/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021NEWSROOM/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021OPENBOOKQA/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "openbookqa:0.1.0"]
+
+D/FLAN2021OPENBOOKQA/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021OPENBOOKQA/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021OPENBOOKQA/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021OPENBOOKQA/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+
+D/FLAN2021OPENBOOKQA/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021OPINIONABSTRACTSIDEBATE/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "opinion_abstracts_idebate"]
+
+D/FLAN2021OPINIONABSTRACTSIDEBATE/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021OPINIONABSTRACTSIDEBATE/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021OPINIONABSTRACTSIDEBATE/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021OPINIONABSTRACTSIDEBATE/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+
+D/FLAN2021OPINIONABSTRACTSIDEBATE/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021OPINIONABSTRACTSROTTENTOMATOES/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "opinion_abstracts_rotten_tomatoes"]
+
+D/FLAN2021OPINIONABSTRACTSROTTENTOMATOES/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021OPINIONABSTRACTSROTTENTOMATOES/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021OPINIONABSTRACTSROTTENTOMATOES/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021OPINIONABSTRACTSROTTENTOMATOES/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021OPINIONABSTRACTSROTTENTOMATOES/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021PARACRAWLENES/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "para_crawl_enes"]
+
+D/FLAN2021PARACRAWLENES/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021PARACRAWLENES/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021PARACRAWLENES/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021PARACRAWLENES/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+
+D/FLAN2021PARACRAWLENES/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021PIQA/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "piqa:1.0.0"]
+
+D/FLAN2021PIQA/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021PIQA/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021PIQA/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021PIQA/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+
+D/FLAN2021PIQA/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021QUAC/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "quac:1.0.0"]
+
+D/FLAN2021QUAC/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021QUAC/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021QUAC/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021QUAC/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021QUAC/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021SENTIMENT140/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "sentiment140:1.0.0"]
+
+D/FLAN2021SENTIMENT140/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021SENTIMENT140/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021SENTIMENT140/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021SENTIMENT140/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021SENTIMENT140/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021SNLI/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "snli:1.1.0"]
+
+D/FLAN2021SNLI/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021SNLI/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021SNLI/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021SNLI/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+
+D/FLAN2021SNLI/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021SQUAD/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "squad", "v2.0:3.0.0"]
+
+D/FLAN2021SQUAD/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021SQUAD/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021SQUAD/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021SQUAD/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021SQUAD/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021SUPERGLUEMULTIRC/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "super_glue", "multirc:1.0.2"]
+
+D/FLAN2021SUPERGLUEMULTIRC/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021SUPERGLUEMULTIRC/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021SUPERGLUEMULTIRC/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021SUPERGLUEMULTIRC/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021SUPERGLUEMULTIRC/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021SUPERGLUERECORD/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "super_glue", "record:1.0.2"]
+
+D/FLAN2021SUPERGLUERECORD/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021SUPERGLUERECORD/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021SUPERGLUERECORD/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021SUPERGLUERECORD/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021SUPERGLUERECORD/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021TRIVIAQA/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "trivia_qa", "rc:1.1.0"]
+
+D/FLAN2021TRIVIAQA/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021TRIVIAQA/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021TRIVIAQA/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021TRIVIAQA/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+
+D/FLAN2021TRIVIAQA/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021TRUECASE/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "true_case"]
+
+D/FLAN2021TRUECASE/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021TRUECASE/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021TRUECASE/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021TRUECASE/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+
+D/FLAN2021TRUECASE/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021UNIFIEDQASCIENCEINST/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "unified_qa_science_inst"]
+
+D/FLAN2021UNIFIEDQASCIENCEINST/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021UNIFIEDQASCIENCEINST/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021UNIFIEDQASCIENCEINST/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021UNIFIEDQASCIENCEINST/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+
+D/FLAN2021UNIFIEDQASCIENCEINST/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WORDSEGMENT/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "word_segment"]
+
+D/FLAN2021WORDSEGMENT/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WORDSEGMENT/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WORDSEGMENT/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WORDSEGMENT/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+
+D/FLAN2021WORDSEGMENT/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WMT14TRANSLATEFREN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "wmt14_translate", "fr-en:1.0.0"]
+
+D/FLAN2021WMT14TRANSLATEFREN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WMT14TRANSLATEFREN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WMT14TRANSLATEFREN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WMT14TRANSLATEFREN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021WMT14TRANSLATEFREN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WMT16TRANSLATECSEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "wmt16_translate", "cs-en:1.0.0"]
+
+D/FLAN2021WMT16TRANSLATECSEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATECSEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WMT16TRANSLATECSEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATECSEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021WMT16TRANSLATECSEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WMT16TRANSLATEDEEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "wmt16_translate", "de-en:1.0.0"]
+
+D/FLAN2021WMT16TRANSLATEDEEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATEDEEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WMT16TRANSLATEDEEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATEDEEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021WMT16TRANSLATEDEEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WMT16TRANSLATERUEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "wmt16_translate", "ru-en:1.0.0"]
+
+D/FLAN2021WMT16TRANSLATERUEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATERUEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WMT16TRANSLATERUEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATERUEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021WMT16TRANSLATERUEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WMT16TRANSLATEFIEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "wmt16_translate", "fi-en:1.0.0"]
+
+D/FLAN2021WMT16TRANSLATEFIEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATEFIEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WMT16TRANSLATEFIEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATEFIEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021WMT16TRANSLATEFIEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WMT16TRANSLATEROEN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "wmt16_translate", "ro-en:1.0.0"]
+
+D/FLAN2021WMT16TRANSLATEROEN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATEROEN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WMT16TRANSLATEROEN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATEROEN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021WMT16TRANSLATEROEN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021WMT16TRANSLATETREN/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "wmt16_translate", "tr-en:1.0.0"]
+
+D/FLAN2021WMT16TRANSLATETREN/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATETREN/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021WMT16TRANSLATETREN/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021WMT16TRANSLATETREN/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021WMT16TRANSLATETREN/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/FLAN2021AESLC/FlanDataset:
+    dataset_path = ["FLANV2", "Flan2021", "aeslc:1.0.0"]
+
+D/FLAN2021AESLC/ZS/TRAIN/build.cls = @FlanDataset
+D/FLAN2021AESLC/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/FLAN2021AESLC/ZS/EVAL/build.cls = @FlanDataset
+D/FLAN2021AESLC/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+
+D/FLAN2021AESLC/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+# did not add P3 Heldout dataets cb, winogrande
+
+# ------- NIV2---------#
+D/NIV2TRANSLATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Translation"]
+
+D/NIV2TRANSLATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TRANSLATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2TRANSLATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TRANSLATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2TRANSLATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2PROGRAMEXECUTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Program Execution"]
+
+D/NIV2PROGRAMEXECUTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2PROGRAMEXECUTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2PROGRAMEXECUTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2PROGRAMEXECUTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2PROGRAMEXECUTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2QUESTIONGENERATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Question Generation"]
+
+D/NIV2QUESTIONGENERATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2QUESTIONGENERATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2QUESTIONGENERATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2QUESTIONGENERATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2QUESTIONGENERATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SENTIMENTANALYSIS/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Sentiment Analysis"]
+
+D/NIV2SENTIMENTANALYSIS/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SENTIMENTANALYSIS/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2SENTIMENTANALYSIS/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SENTIMENTANALYSIS/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2SENTIMENTANALYSIS/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TEXTCATEGORIZATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Text Categorization"]
+
+D/NIV2TEXTCATEGORIZATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TEXTCATEGORIZATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2TEXTCATEGORIZATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TEXTCATEGORIZATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2TEXTCATEGORIZATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TEXTMATCHING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Text Matching"]
+
+D/NIV2TEXTMATCHING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TEXTMATCHING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2TEXTMATCHING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TEXTMATCHING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/NIV2TEXTMATCHING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TOXICLANGUAGEDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Toxic Language Detection"]
+
+D/NIV2TOXICLANGUAGEDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TOXICLANGUAGEDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2TOXICLANGUAGEDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TOXICLANGUAGEDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/NIV2TOXICLANGUAGEDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2CAUSEEFFECTCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Cause Effect Classification"]
+
+D/NIV2CAUSEEFFECTCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2CAUSEEFFECTCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2CAUSEEFFECTCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2CAUSEEFFECTCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/NIV2CAUSEEFFECTCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2INFORMATIONEXTRACTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Information Extraction"]
+
+D/NIV2INFORMATIONEXTRACTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2INFORMATIONEXTRACTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2INFORMATIONEXTRACTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2INFORMATIONEXTRACTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2INFORMATIONEXTRACTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TEXTUALENTAILMENT/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Textual Entailment"]
+
+D/NIV2TEXTUALENTAILMENT/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TEXTUALENTAILMENT/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2TEXTUALENTAILMENT/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TEXTUALENTAILMENT/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2TEXTUALENTAILMENT/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2WRONGCANDIDATEGENERATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Wrong Candidate Generation"]
+
+D/NIV2WRONGCANDIDATEGENERATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2WRONGCANDIDATEGENERATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2WRONGCANDIDATEGENERATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2WRONGCANDIDATEGENERATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2WRONGCANDIDATEGENERATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2NAMEDENTITYRECOGNITION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Named Entity Recognition"]
+
+D/NIV2NAMEDENTITYRECOGNITION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2NAMEDENTITYRECOGNITION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2NAMEDENTITYRECOGNITION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2NAMEDENTITYRECOGNITION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2NAMEDENTITYRECOGNITION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2COMMONSENSECLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Commonsense Classification"]
+
+D/NIV2COMMONSENSECLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2COMMONSENSECLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2COMMONSENSECLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2COMMONSENSECLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2COMMONSENSECLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2FILLINTHEBLANK/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Fill in The Blank"]
+
+D/NIV2FILLINTHEBLANK/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2FILLINTHEBLANK/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2FILLINTHEBLANK/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2FILLINTHEBLANK/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2FILLINTHEBLANK/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TEXTCOMPLETION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Text Completion"]
+
+D/NIV2TEXTCOMPLETION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TEXTCOMPLETION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2TEXTCOMPLETION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TEXTCOMPLETION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2TEXTCOMPLETION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SENTENCECOMPOSITION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Sentence Composition"]
+
+D/NIV2SENTENCECOMPOSITION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SENTENCECOMPOSITION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2SENTENCECOMPOSITION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SENTENCECOMPOSITION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2SENTENCECOMPOSITION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TITLEGENERATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Title Generation"]
+
+D/NIV2TITLEGENERATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TITLEGENERATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2TITLEGENERATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TITLEGENERATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2TITLEGENERATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2LANGUAGEIDENTIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Language Identification"]
+
+D/NIV2LANGUAGEIDENTIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2LANGUAGEIDENTIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2LANGUAGEIDENTIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2LANGUAGEIDENTIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2LANGUAGEIDENTIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2QUESTIONUNDERSTANDING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Question Understanding"]
+
+D/NIV2QUESTIONUNDERSTANDING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2QUESTIONUNDERSTANDING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/NIV2QUESTIONUNDERSTANDING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2QUESTIONUNDERSTANDING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+D/NIV2QUESTIONUNDERSTANDING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SENTENCEPERTURBATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Sentence Perturbation"]
+
+D/NIV2SENTENCEPERTURBATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SENTENCEPERTURBATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2SENTENCEPERTURBATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SENTENCEPERTURBATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2SENTENCEPERTURBATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2ANSWERABILITYCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Answerability Classification"]
+
+D/NIV2ANSWERABILITYCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2ANSWERABILITYCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2ANSWERABILITYCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2ANSWERABILITYCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2ANSWERABILITYCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SUMMARIZATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Summarization"]
+
+D/NIV2SUMMARIZATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SUMMARIZATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/NIV2SUMMARIZATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SUMMARIZATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2SUMMARIZATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2COREFERENCERESOLUTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Coreference Resolution"]
+
+D/NIV2COREFERENCERESOLUTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2COREFERENCERESOLUTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/NIV2COREFERENCERESOLUTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2COREFERENCERESOLUTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2COREFERENCERESOLUTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TEXTQUALITYEVALUATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Text Quality Evaluation"]
+
+D/NIV2TEXTQUALITYEVALUATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TEXTQUALITYEVALUATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2TEXTQUALITYEVALUATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TEXTQUALITYEVALUATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+D/NIV2TEXTQUALITYEVALUATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TEXTTOCODE/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Text to Code"]
+
+D/NIV2TEXTTOCODE/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TEXTTOCODE/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2TEXTTOCODE/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TEXTTOCODE/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2TEXTTOCODE/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2PARAPHRASING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Paraphrasing"]
+
+D/NIV2PARAPHRASING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2PARAPHRASING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2PARAPHRASING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2PARAPHRASING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2PARAPHRASING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2DIALOGUEGENERATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Dialogue Generation"]
+
+D/NIV2DIALOGUEGENERATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2DIALOGUEGENERATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2DIALOGUEGENERATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2DIALOGUEGENERATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2DIALOGUEGENERATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2QUESTIONREWRITING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Question Rewriting"]
+
+D/NIV2QUESTIONREWRITING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2QUESTIONREWRITING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2QUESTIONREWRITING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2QUESTIONREWRITING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2QUESTIONREWRITING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2WORDSEMANTICS/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Word Semantics"]
+
+D/NIV2WORDSEMANTICS/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2WORDSEMANTICS/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2WORDSEMANTICS/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2WORDSEMANTICS/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2WORDSEMANTICS/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2POSTAGGING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Pos Tagging"]
+
+D/NIV2POSTAGGING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2POSTAGGING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2POSTAGGING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2POSTAGGING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2POSTAGGING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2LINGUISTICPROBING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Linguistic Probing"]
+
+D/NIV2LINGUISTICPROBING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2LINGUISTICPROBING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2LINGUISTICPROBING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2LINGUISTICPROBING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2LINGUISTICPROBING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2STORYCOMPOSITION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Story Composition"]
+
+D/NIV2STORYCOMPOSITION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2STORYCOMPOSITION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2STORYCOMPOSITION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2STORYCOMPOSITION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2STORYCOMPOSITION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SPEAKERIDENTIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Speaker Identification"]
+
+D/NIV2SPEAKERIDENTIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SPEAKERIDENTIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2SPEAKERIDENTIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SPEAKERIDENTIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2SPEAKERIDENTIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2WORDANALOGY/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Word Analogy"]
+
+D/NIV2WORDANALOGY/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2WORDANALOGY/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2WORDANALOGY/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2WORDANALOGY/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2WORDANALOGY/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2DATATOTEXT/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Data to Text"]
+
+D/NIV2DATATOTEXT/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2DATATOTEXT/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2DATATOTEXT/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2DATATOTEXT/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2DATATOTEXT/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2STEREOTYPEDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Stereotype Detection"]
+
+D/NIV2STEREOTYPEDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2STEREOTYPEDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2STEREOTYPEDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2STEREOTYPEDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2STEREOTYPEDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2NEGOTIATIONSTRATEGYDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Negotiation Strategy Detection"]
+
+D/NIV2NEGOTIATIONSTRATEGYDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2NEGOTIATIONSTRATEGYDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2NEGOTIATIONSTRATEGYDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2NEGOTIATIONSTRATEGYDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 2
+D/NIV2NEGOTIATIONSTRATEGYDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2DIALOGUEACTRECOGNITION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Dialogue Act Recognition"]
+
+D/NIV2DIALOGUEACTRECOGNITION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2DIALOGUEACTRECOGNITION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2DIALOGUEACTRECOGNITION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2DIALOGUEACTRECOGNITION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2DIALOGUEACTRECOGNITION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2GENDERCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Gender Classification"]
+
+D/NIV2GENDERCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2GENDERCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2GENDERCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2GENDERCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2GENDERCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2COHERENCECLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Coherence Classification"]
+
+D/NIV2COHERENCECLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2COHERENCECLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2COHERENCECLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2COHERENCECLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2COHERENCECLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2EXPLANATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Explanation"]
+
+D/NIV2EXPLANATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2EXPLANATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2EXPLANATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2EXPLANATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2EXPLANATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2ETHICSCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Ethics Classification"]
+
+D/NIV2ETHICSCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2ETHICSCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2ETHICSCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2ETHICSCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2ETHICSCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2WORDRELATIONCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Word Relation Classification"]
+
+D/NIV2WORDRELATIONCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2WORDRELATIONCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2WORDRELATIONCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2WORDRELATIONCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2WORDRELATIONCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SENTENCEORDERING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Sentence Ordering"]
+
+D/NIV2SENTENCEORDERING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SENTENCEORDERING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2SENTENCEORDERING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SENTENCEORDERING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2SENTENCEORDERING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2ANSWERVERIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Answer Verification"]
+
+D/NIV2ANSWERVERIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2ANSWERVERIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2ANSWERVERIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2ANSWERVERIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2ANSWERVERIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2MATHEMATICS/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Mathematics"]
+
+D/NIV2MATHEMATICS/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2MATHEMATICS/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2MATHEMATICS/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2MATHEMATICS/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2MATHEMATICS/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2INTENTIDENTIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Intent Identification"]
+
+D/NIV2INTENTIDENTIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2INTENTIDENTIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2INTENTIDENTIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2INTENTIDENTIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+D/NIV2INTENTIDENTIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2KEYWORDTAGGING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Keyword Tagging"]
+
+D/NIV2KEYWORDTAGGING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2KEYWORDTAGGING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2KEYWORDTAGGING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2KEYWORDTAGGING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2KEYWORDTAGGING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2CODETOTEXT/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Code to Text"]
+
+D/NIV2CODETOTEXT/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2CODETOTEXT/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2CODETOTEXT/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2CODETOTEXT/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2CODETOTEXT/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2DIALOGUESTATETRACKING/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Dialogue State Tracking"]
+
+D/NIV2DIALOGUESTATETRACKING/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2DIALOGUESTATETRACKING/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2DIALOGUESTATETRACKING/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2DIALOGUESTATETRACKING/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2DIALOGUESTATETRACKING/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2TEXTSIMPLIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Text Simplification"]
+
+D/NIV2TEXTSIMPLIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2TEXTSIMPLIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2TEXTSIMPLIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2TEXTSIMPLIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2TEXTSIMPLIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2STANCEDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Stance Detection"]
+
+D/NIV2STANCEDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2STANCEDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2STANCEDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2STANCEDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2STANCEDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2FACTVERIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Fact Verification"]
+
+D/NIV2FACTVERIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2FACTVERIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2FACTVERIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2FACTVERIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2FACTVERIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2GRAMMARERRORDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Grammar Error Detection"]
+
+D/NIV2GRAMMARERRORDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2GRAMMARERRORDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2GRAMMARERRORDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2GRAMMARERRORDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2GRAMMARERRORDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SECTIONCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Section Classification"]
+
+D/NIV2SECTIONCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SECTIONCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2SECTIONCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SECTIONCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2SECTIONCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2NUMBERCONVERSION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Number Conversion"]
+
+D/NIV2NUMBERCONVERSION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2NUMBERCONVERSION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2NUMBERCONVERSION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2NUMBERCONVERSION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/NIV2NUMBERCONVERSION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2STYLETRANSFER/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Style Transfer"]
+
+D/NIV2STYLETRANSFER/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2STYLETRANSFER/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2STYLETRANSFER/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2STYLETRANSFER/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/NIV2STYLETRANSFER/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SPEAKERRELATIONCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Speaker Relation Classification"]
+
+D/NIV2SPEAKERRELATIONCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SPEAKERRELATIONCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2SPEAKERRELATIONCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SPEAKERRELATIONCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2SPEAKERRELATIONCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2IRONYDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Irony Detection"]
+
+D/NIV2IRONYDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2IRONYDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2IRONYDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2IRONYDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2IRONYDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2QUESTIONDECOMPOSITION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Question Decomposition"]
+
+D/NIV2QUESTIONDECOMPOSITION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2QUESTIONDECOMPOSITION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2QUESTIONDECOMPOSITION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2QUESTIONDECOMPOSITION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2QUESTIONDECOMPOSITION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2OVERLAPEXTRACTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Overlap Extraction"]
+
+D/NIV2OVERLAPEXTRACTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2OVERLAPEXTRACTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2OVERLAPEXTRACTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2OVERLAPEXTRACTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/NIV2OVERLAPEXTRACTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2GRAMMARERRORCORRECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Grammar Error Correction"]
+
+D/NIV2GRAMMARERRORCORRECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2GRAMMARERRORCORRECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/NIV2GRAMMARERRORCORRECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2GRAMMARERRORCORRECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2GRAMMARERRORCORRECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SPELLINGERRORDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Spelling Error Detection"]
+
+D/NIV2SPELLINGERRORDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SPELLINGERRORDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2SPELLINGERRORDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SPELLINGERRORDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2SPELLINGERRORDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2ENTITYGENERATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Entity Generation"]
+
+D/NIV2ENTITYGENERATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2ENTITYGENERATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2ENTITYGENERATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2ENTITYGENERATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2ENTITYGENERATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SENTENCEEXPANSION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Sentence Expansion"]
+
+D/NIV2SENTENCEEXPANSION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SENTENCEEXPANSION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2SENTENCEEXPANSION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SENTENCEEXPANSION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2SENTENCEEXPANSION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2DISCOURSECONNECTIVEIDENTIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Discourse Connective Identification"]
+
+D/NIV2DISCOURSECONNECTIVEIDENTIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2DISCOURSECONNECTIVEIDENTIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2DISCOURSECONNECTIVEIDENTIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2DISCOURSECONNECTIVEIDENTIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 8
+D/NIV2DISCOURSECONNECTIVEIDENTIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2DISCOURSERELATIONCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Discourse Relation Classification"]
+
+D/NIV2DISCOURSERELATIONCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2DISCOURSERELATIONCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2DISCOURSERELATIONCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2DISCOURSERELATIONCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/NIV2DISCOURSERELATIONCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2POEMGENERATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Poem Generation"]
+
+D/NIV2POEMGENERATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2POEMGENERATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2POEMGENERATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2POEMGENERATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/NIV2POEMGENERATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2ENTITYRELATIONCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Entity Relation Classification"]
+
+D/NIV2ENTITYRELATIONCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2ENTITYRELATIONCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2ENTITYRELATIONCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2ENTITYRELATIONCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 2
+D/NIV2ENTITYRELATIONCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2PUNCTUATIONERRORDETECTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Punctuation Error Detection"]
+
+D/NIV2PUNCTUATIONERRORDETECTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2PUNCTUATIONERRORDETECTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2PUNCTUATIONERRORDETECTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2PUNCTUATIONERRORDETECTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2PUNCTUATIONERRORDETECTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SPAMCLASSIFICATION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Spam Classification"]
+
+D/NIV2SPAMCLASSIFICATION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SPAMCLASSIFICATION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2SPAMCLASSIFICATION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SPAMCLASSIFICATION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 4
+D/NIV2SPAMCLASSIFICATION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2PAPERREVIEW/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Paper Review"]
+
+D/NIV2PAPERREVIEW/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2PAPERREVIEW/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2PAPERREVIEW/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2PAPERREVIEW/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 2
+D/NIV2PAPERREVIEW/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2SENTENCECOMPRESSION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Sentence Compression"]
+
+D/NIV2SENTENCECOMPRESSION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2SENTENCECOMPRESSION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2SENTENCECOMPRESSION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2SENTENCECOMPRESSION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/NIV2SENTENCECOMPRESSION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2PREPOSITIONPREDICTION/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Preposition Prediction"]
+
+D/NIV2PREPOSITIONPREDICTION/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2PREPOSITIONPREDICTION/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 16
+    max_examples_per_dataset = 500_000
+
+D/NIV2PREPOSITIONPREDICTION/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2PREPOSITIONPREDICTION/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 2
+D/NIV2PREPOSITIONPREDICTION/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/NIV2MISC/FlanDataset:
+    dataset_path = ["FLANV2", "NIV2", "Misc."]
+
+D/NIV2MISC/ZS/TRAIN/build.cls = @FlanDataset
+D/NIV2MISC/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 8
+    max_examples_per_dataset = 500_000
+
+D/NIV2MISC/ZS/EVAL/build.cls = @FlanDataset
+D/NIV2MISC/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/NIV2MISC/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/DIALOGQRECC/FlanDataset:
+    dataset_path = ["FLANV2", "Dialog", "qrecc"]
+
+D/DIALOGQRECC/ZS/TRAIN/build.cls = @FlanDataset
+D/DIALOGQRECC/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/DIALOGQRECC/ZS/EVAL/build.cls = @FlanDataset
+D/DIALOGQRECC/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/DIALOGQRECC/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/DIALOGQRECCII/FlanDataset:
+    dataset_path = ["FLANV2", "Dialog", "qrecc_ii"]
+
+D/DIALOGQRECCII/ZS/TRAIN/build.cls = @FlanDataset
+D/DIALOGQRECCII/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 4
+    max_examples_per_dataset = 500_000
+
+D/DIALOGQRECCII/ZS/EVAL/build.cls = @FlanDataset
+D/DIALOGQRECCII/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/DIALOGQRECCII/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/DIALOGWIKIDIALOG/FlanDataset:
+    dataset_path = ["FLANV2", "Dialog", "wiki_dialog"]
+
+D/DIALOGWIKIDIALOG/ZS/TRAIN/build.cls = @FlanDataset
+D/DIALOGWIKIDIALOG/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/DIALOGWIKIDIALOG/ZS/EVAL/build.cls = @FlanDataset
+D/DIALOGWIKIDIALOG/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/DIALOGWIKIDIALOG/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]
+
+D/DIALOGWIKIDIALOGII/FlanDataset:
+    dataset_path = ["FLANV2", "Dialog", "wiki_dialog_ii"]
+
+D/DIALOGWIKIDIALOGII/ZS/TRAIN/build.cls = @FlanDataset
+D/DIALOGWIKIDIALOGII/ZS/TRAIN/FlanDataset:
+    split = "train"
+    batch_size = 2
+    max_examples_per_dataset = 500_000
+
+D/DIALOGWIKIDIALOGII/ZS/EVAL/build.cls = @FlanDataset
+D/DIALOGWIKIDIALOGII/ZS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 512
+D/DIALOGWIKIDIALOGII/ZS/EVAL/FlanDataset:
+    split = "validation"
+    metrics = ["rouge"]

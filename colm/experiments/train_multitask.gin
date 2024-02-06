@@ -1,0 +1,19 @@
+include 'colm/experiments/train.gin'
+
+P/TRAIN/Trainer:
+    batcher = @P/TRAIN/MultiTaskBatcher()
+    gradient_accumulation_factor = 32
+
+P/TRAIN/MultiTaskBatcher:
+    shuffle = True
+    drop_last = True
+    num_workers = 8
+    temperature = 1
+    num_replicas = 1
+    rank = 0
+
+M/MODEL/extend_moe:
+    num_new_experts = 8
+    weight_init = "from_scratch"
+    router_addon_name = "router"
+    identifier_stem = ""

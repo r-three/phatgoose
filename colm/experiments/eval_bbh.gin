@@ -1,0 +1,31 @@
+import src.models
+import src.procedures
+import src.procedures.utils
+import src.models.addons
+import src.models.manipulations
+import src.utils.logging
+
+P/EVALUATE/build.cls = @Evaluator
+P/EVALUATE/Evaluator:
+    model = "M/MODEL"
+    datasets = "D/${DATASET}/EVAL"
+    save_results = @save_results
+    analysis_processors = [@RoutingDistribution(), @EntropyDistribution()]
+
+P/EVALUATE/BBH/Evaluator:
+    datasets = ["D/BBH_BOOLEAN_EXPRESSIONS/EVAL", "D/BBH_CAUSAL_JUDGEMENT/EVAL", "D/BBH_DATE_UNDERSTANDING/EVAL", "D/BBH_DISAMBIGUATION_QA/EVAL", "D/BBH_DYCK_LANGUAGES/EVAL", "D/BBH_FORMAL_FALLACIES/EVAL", "D/BBH_GEOMETRIC_SHAPES/EVAL", "D/BBH_HYPERBATON/EVAL", "D/BBH_LOGICAL_DEDUCTION_FIVE_OBJECTS/EVAL", "D/BBH_LOGICAL_DEDUCTION_SEVEN_OBJECTS/EVAL", "D/BBH_LOGICAL_DEDUCTION_THREE_OBJECTS/EVAL", "D/BBH_MOVIE_RECOMMENDATION/EVAL", "D/BBH_MULTISTEP_ARITHMETIC_TWO/EVAL", "D/BBH_NAVIGATE/EVAL", "D/BBH_OBJECT_COUNTING/EVAL", "D/BBH_PENGUINS_IN_A_TABLE/EVAL", "D/BBH_REASONING_ABOUT_COLORED_OBJECTS/EVAL", "D/BBH_RUIN_NAMES/EVAL", "D/BBH_SALIENT_TRANSLATION_ERROR_DETECTION/EVAL", "D/BBH_SNARKS/EVAL", "D/BBH_SPORTS_UNDERSTANDING/EVAL", "D/BBH_TEMPORAL_SEQUENCES/EVAL", "D/BBH_TRACKING_SHUFFLED_OBJECTS_FIVE_OBJECTS/EVAL", "D/BBH_TRACKING_SHUFFLED_OBJECTS_SEVEN_OBJECTS/EVAL", "D/BBH_TRACKING_SHUFFLED_OBJECTS_THREE_OBJECTS/EVAL", "D/BBH_WEB_OF_LIES/EVAL", "D/BBH_WORD_SORTING/EVAL"]
+
+save_results.save_dir = "exp_out/${EXP_NAME}"
+RoutingDistribution.save_dir = "exp_out/${EXP_NAME}/routing_distribution"
+EntropyDistribution.save_dir = "exp_out/${EXP_NAME}/entropy_distribution"
+
+M/MODEL/Model.trainable_params = "none"
+M/MODEL/load_weights.weight_path = "exp_out/${EXP_NAME}/best.pt"
+M/MODEL/Model.init_moma_calls = [@M/MODEL/ENCODER/watch_hiddens, @M/MODEL/DECODER/watch_hiddens, @M/MODEL/ENCODER/make_moe, @M/MODEL/DECODER/make_moe, @M/MODEL/load_weights]
+
+M/MODEL/ExtendableAddon.separate_experts = True
+
+main:
+    procedure_exec_order=["P/EVALUATE/BBH"]
+    exp_name="${EXP_NAME}"
+    global_seed = 42

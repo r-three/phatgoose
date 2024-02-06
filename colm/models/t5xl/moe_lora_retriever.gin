@@ -1,0 +1,26 @@
+import src.models
+import src.models.addons
+import src.models.manipulations
+
+M/MODEL/FFNExperts:
+    non_linearity = "identity"
+    position = "beside"
+    d_in = "host_module.in_features"
+    d_out = "host_module.out_features"
+    divide_by_d_bottleneck = True
+    d_bottleneck = 16
+
+M/MODEL/make_moe:
+    expert_class = "ffn"
+    router_addon_name = "router"
+    expert_addon_name = "expert_lora"
+    router_modules = "encoder"
+    expose_hiddens_addon_name = "feature_extractor"
+
+M/MODEL/ENCODER/make_moe:
+    expert_modules = "encoder_linear"
+
+M/MODEL/DECODER/make_moe:
+    expert_modules = "decoder_linear"
+
+M/MODEL/Router.d_router=384000

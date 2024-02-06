@@ -1,0 +1,33 @@
+include 'colm/experiments/train.gin'
+
+P/TRAIN/Trainer:
+    datasets = "D/${DATASET}/TRAIN"
+    batcher = @P/TRAIN/SingleTaskBatcher()
+    num_steps = 1000
+    validation_step_interval = 100
+    gradient_accumulation_factor = 32
+
+P/TRAIN/SingleTaskBatcher:
+    shuffle = True
+    drop_last = True
+    num_workers = 8
+
+P/EVALUATE/Evaluator:
+    datasets = "D/${DATASET}/EVAL"
+
+M/MODEL/extend_moe:
+    num_new_experts = 1
+    weight_init = "from_scratch"
+    router_addon_name = "router"
+    identifier_stem = ""
+P/EVALUATE/PREVIOUS/Evaluator:
+    better_model_moma_calls = []
+
+M/MODEL/load_weights.weight_path = "exp_out/${OLD_EXP_NAME}/best.pt"
+M/MODEL/Model.trainable_params = ".*expert.*_${INDEX}$"
+M/MODEL/Model.init_moma_calls = [@M/MODEL/ENCODER/watch_hiddens, @M/MODEL/DECODER/watch_hiddens, @M/MODEL/ENCODER/make_moe, @M/MODEL/DECODER/make_moe, @M/MODEL/load_weights, @M/MODEL/extend_moe]
+
+main:
+    procedure_exec_order = ["P/EVALUATE", "P/TRAIN", "P/EVALUATE", "P/EVALUATE/HELDOUT", "P/EVALUATE/PREVIOUS"]
+    exp_name = "${EXP_NAME}"
+    global_seed = 42

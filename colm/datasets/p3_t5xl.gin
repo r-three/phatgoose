@@ -1,0 +1,1149 @@
+import src.data
+
+D/InterfaceInfo:
+    interface = "lm"
+    length_normalization = True
+    multiple_choice_loss = 1
+    unlikelihood_loss = 1
+    num_beams = 1
+
+D/P3Dataset:
+    max_length = 512
+    batch_size = 32
+    include_templates = "all"
+
+#------------------------------Eight Sample Start--------------------#
+D/P3SOCIALIQA/P3Dataset:
+    dataset_path = ["huggingface", "social_i_qa"]
+
+D/P3SOCIALIQA/TRAIN/build.cls = @P3Dataset
+D/P3SOCIALIQA/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3SOCIALIQA/EVAL/build.cls = @P3Dataset
+D/P3SOCIALIQA/EVAL/InterfaceInfo.interface = "mc"
+D/P3SOCIALIQA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    ignore_templates = ["Check if a random answer is valid or not"]
+    include_templates = "original"
+
+D/P3PAWS/P3Dataset:
+    dataset_path = ["huggingface", "paws", "labeled_final"]
+    ignore_templates = ["paraphrase-task"]
+
+D/P3PAWS/TRAIN/build.cls = @P3Dataset
+D/P3PAWS/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3PAWS/EVAL/build.cls = @P3Dataset
+D/P3PAWS/EVAL/InterfaceInfo.interface = "mc"
+D/P3PAWS/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3WIKIQA/P3Dataset:
+    dataset_path = ["huggingface", "wiki_qa"]
+    ignore_templates = ["Direct Answer to Question", "Generate Question from Topic", "Jeopardy style", "Topic Prediction - Answer Only", "Topic Prediction - Question Only", "Topic Prediction - Question and Answer Pair"]
+
+D/P3WIKIQA/TRAIN/build.cls = @P3Dataset
+D/P3WIKIQA/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WIKIQA/EVAL/build.cls = @P3Dataset
+D/P3WIKIQA/EVAL/InterfaceInfo.interface = "mc"
+D/P3WIKIQA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3ROPES/P3Dataset:
+    dataset_path = ["huggingface", "ropes"]
+
+D/P3ROPES/TRAIN/build.cls = @P3RopesDataset
+D/P3ROPES/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3ROPES/EVAL/build.cls = @P3RopesDataset
+D/P3ROPES/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/P3ROPES/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["squad"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3AGNEWS/P3Dataset:
+    dataset_path = ["huggingface", "ag_news"]
+
+D/P3AGNEWS/TRAIN/build.cls = @P3Dataset
+D/P3AGNEWS/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3AGNEWS/EVAL/build.cls = @P3Dataset
+D/P3AGNEWS/EVAL/InterfaceInfo.interface = "mc"
+D/P3AGNEWS/EVAL/P3Dataset:
+    split = "test"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3AMAZONPOLARITY/P3Dataset:
+    dataset_path = ["huggingface", "amazon_polarity"]
+
+D/P3AMAZONPOLARITY/TRAIN/build.cls = @P3Dataset
+D/P3AMAZONPOLARITY/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3AMAZONPOLARITY/EVAL/build.cls = @P3Dataset
+D/P3AMAZONPOLARITY/EVAL/InterfaceInfo.interface = "mc"
+D/P3AMAZONPOLARITY/EVAL/P3Dataset:
+    split = "test"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3WIKIBIO/P3WikiBioDataset:
+    dataset_path = ["huggingface", "wiki_bio"]
+
+D/P3WIKIBIO/TRAIN/build.cls = @P3WikiBioDataset
+D/P3WIKIBIO/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WIKIBIO/EVAL/build.cls = @P3WikiBioDataset
+D/P3WIKIBIO/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/P3WIKIBIO/EVAL/P3Dataset:
+    split = "val"
+    metrics = ["bleu", "rouge"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3CNNDAILYMAIL/P3CNNDailyMailDataset:
+    dataset_path = ["huggingface", "cnn_dailymail", "3.0.0"]
+
+D/P3CNNDAILYMAIL/TRAIN/build.cls = @P3CNNDailyMailDataset
+D/P3CNNDAILYMAIL/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3CNNDAILYMAIL/EVAL/build.cls = @P3CNNDailyMailDataset
+D/P3CNNDAILYMAIL/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/P3CNNDAILYMAIL/EVAL/P3Dataset:
+    batch_size = 8
+    split = "validation"
+    metrics = ["bleu", "rouge"]
+    round_robin_template = True
+    include_templates = "original"
+
+#------------------------------Eight Sample End--------------------#
+D/P3COSMOSQA/P3Dataset:
+    dataset_path = ["huggingface", "cosmos_qa"]
+
+D/P3COSMOSQA/TRAIN/build.cls = @P3Dataset
+D/P3COSMOSQA/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3COSMOSQA/EVAL/build.cls = @P3Dataset
+D/P3COSMOSQA/EVAL/InterfaceInfo.interface = "mc"
+D/P3COSMOSQA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3QUAIL/P3Dataset:
+    dataset_path = ["huggingface", "quail"]
+
+D/P3QUAIL/TRAIN/build.cls = @P3Dataset
+D/P3QUAIL/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3QUAIL/EVAL/build.cls = @P3Dataset
+D/P3QUAIL/EVAL/InterfaceInfo.interface = "mc"
+D/P3QUAIL/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3QUARTZ/P3Dataset:
+    dataset_path = ["huggingface", "quartz"]
+
+D/P3QUARTZ/TRAIN/build.cls = @P3Dataset
+D/P3QUARTZ/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3QUARTZ/EVAL/build.cls = @P3Dataset
+D/P3QUARTZ/EVAL/InterfaceInfo.interface = "mc"
+D/P3QUARTZ/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3QASC/P3Dataset:
+    dataset_path = ["huggingface", "qasc"]
+
+D/P3QASC/TRAIN/build.cls = @P3Dataset
+D/P3QASC/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3QASC/EVAL/build.cls = @P3Dataset
+D/P3QASC/EVAL/InterfaceInfo.interface = "mc"
+D/P3QASC/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3COMMONGEN/P3CommonGenDataset:
+    dataset_path = ["huggingface", "common_gen"]
+
+D/P3COMMONGEN/TRAIN/build.cls = @P3CommonGenDataset
+D/P3COMMONGEN/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3COMMONGEN/EVAL/build.cls = @P3CommonGenDataset
+D/P3COMMONGEN/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/P3COMMONGEN/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["bleu", "rouge"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3ADVERSARIALQA/P3AdversarialQADataset:
+    dataset_path = ["huggingface", "adversarial_qa", "adversarialQA"]
+
+D/P3ADVERSARIALQA/TRAIN/build.cls = @P3AdversarialQADataset
+D/P3ADVERSARIALQA/TRAIN/P3Dataset:
+    batch_size = 8
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3ADVERSARIALQA/EVAL/build.cls = @P3AdversarialQADataset
+D/P3ADVERSARIALQA/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/P3ADVERSARIALQA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["squad"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3APPREVIEWS/P3Dataset:
+    dataset_path = ["huggingface", "app_reviews"]
+
+D/P3APPREVIEWS/TRAIN/build.cls = @P3AppReviewsDataset
+D/P3APPREVIEWS/TRAIN/P3Dataset:
+    batch_size = 8
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3APPREVIEWS/EVAL/build.cls = @P3AppReviewsDataset
+D/P3APPREVIEWS/EVAL/InterfaceInfo.interface = "mc"
+D/P3APPREVIEWS/EVAL/P3Dataset:
+    split = "train"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    ignore_templates = ["generate_review", "convert_to_rating", "convert_to_star_rating", "generate_review"]
+    include_templates = "all"
+
+D/P3COMMONSENSEQA/P3Dataset:
+    dataset_path = ["huggingface", "commonsense_qa"]
+
+D/P3COMMONSENSEQA/TRAIN/build.cls = @P3Dataset
+D/P3COMMONSENSEQA/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3COMMONSENSEQA/EVAL/build.cls = @P3Dataset
+D/P3COMMONSENSEQA/EVAL/InterfaceInfo.interface = "mc"
+D/P3COMMONSENSEQA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3COSE/P3Dataset:
+    dataset_path = ["huggingface", "cos_e", "v1.11"]
+
+D/P3COSE/TRAIN/build.cls = @P3Dataset
+D/P3COSE/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3COSE/EVAL/build.cls = @P3Dataset
+D/P3COSE/EVAL/InterfaceInfo.interface = "mc"
+D/P3COSE/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3DBPEDIA14/P3Dataset:
+    dataset_path = ["huggingface", "dbpedia_14"]
+
+D/P3DBPEDIA14/TRAIN/build.cls = @P3Dataset
+D/P3DBPEDIA14/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3DBPEDIA14/EVAL/build.cls = @P3Dataset
+D/P3DBPEDIA14/EVAL/InterfaceInfo.interface = "mc"
+D/P3DBPEDIA14/EVAL/P3Dataset:
+    batch_size = 32
+    split = "test"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3DREAM/P3Dataset:
+    dataset_path = ["huggingface", "dream"]
+
+D/P3DREAM/TRAIN/build.cls = @P3Dataset
+D/P3DREAM/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3DREAM/EVAL/build.cls = @P3Dataset
+D/P3DREAM/EVAL/InterfaceInfo.interface = "mc"
+D/P3DREAM/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 500_000
+
+D/P3DUORC/P3DuorcDataset:
+    dataset_path = ["huggingface", "duorc", "ParaphraseRC"]
+
+D/P3DUORC/TRAIN/build.cls = @P3DuorcDataset
+D/P3DUORC/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3DUORC/EVAL/build.cls = @P3DuorcDataset
+D/P3DUORC/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/P3DUORC/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["squad"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3GIGAWORD/P3GigaWordDataset:
+    dataset_path = ["huggingface", "gigaword"]
+
+D/P3GIGAWORD/TRAIN/build.cls = @P3GigaWordDataset
+D/P3GIGAWORD/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3GIGAWORD/EVAL/build.cls = @P3GigaWordDataset
+D/P3GIGAWORD/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/P3GIGAWORD/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["bleu", "rouge"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3HOTPOTQA/P3HotpotQADataset:
+    dataset_path = ["huggingface", "hotpot_qa", "fullwiki"]
+
+D/P3HOTPOTQA/TRAIN/build.cls = @P3HotpotQADataset
+D/P3HOTPOTQA/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3HOTPOTQA/EVAL/build.cls = @P3HotpotQADataset
+D/P3HOTPOTQA/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/P3HOTPOTQA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["blue", "rouge"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3IMDB/P3Dataset:
+    dataset_path = ["huggingface", "imdb"]
+
+D/P3IMDB/TRAIN/build.cls = @P3Dataset
+D/P3IMDB/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3IMDB/EVAL/build.cls = @P3Dataset
+D/P3IMDB/EVAL/InterfaceInfo.interface = "mc"
+D/P3IMDB/EVAL/P3Dataset:
+    split = "test"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3MRPC/P3Dataset:
+    dataset_path = ["huggingface", "glue", "mrpc"]
+
+D/P3MRPC/TRAIN/build.cls = @P3Dataset
+D/P3MRPC/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3MRPC/EVAL/build.cls = @P3Dataset
+D/P3MRPC/EVAL/InterfaceInfo.interface = "mc"
+D/P3MRPC/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3MULTINEWS/P3MultinewsDataset:
+    dataset_path = ["huggingface", "multi_news"]
+
+D/P3MULTINEWS/TRAIN/build.cls = @P3MultinewsDataset
+D/P3MULTINEWS/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3MULTINEWS/EVAL/build.cls = @P3MultinewsDataset
+D/P3MULTINEWS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/P3MULTINEWS/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["bleu", "rouge"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3QQP/P3Dataset:
+    dataset_path = ["huggingface", "glue", "qqp"]
+
+D/P3QQP/TRAIN/build.cls = @P3Dataset
+D/P3QQP/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3QQP/EVAL/build.cls = @P3Dataset
+D/P3QQP/EVAL/InterfaceInfo.interface = "mc"
+D/P3QQP/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3QUAREL/P3Dataset:
+    dataset_path = ["huggingface", "quarel"]
+
+D/P3QUAREL/TRAIN/build.cls = @P3Dataset
+D/P3QUAREL/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3QUAREL/EVAL/build.cls = @P3Dataset
+D/P3QUAREL/EVAL/InterfaceInfo.interface = "mc"
+D/P3QUAREL/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "all"
+
+D/P3QUOREF/P3QuorefDataset:
+    dataset_path = ["huggingface", "quoref"]
+
+D/P3QUOREF/TRAIN/build.cls = @P3QuorefDataset
+D/P3QUOREF/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3QUOREF/EVAL/build.cls = @P3QuorefDataset
+D/P3QUOREF/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+D/P3QUOREF/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["squad"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3ROTTENTOMATOES/P3Dataset:
+    dataset_path = ["huggingface", "rotten_tomatoes"]
+
+D/P3ROTTENTOMATOES/TRAIN/build.cls = @P3Dataset
+D/P3ROTTENTOMATOES/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3ROTTENTOMATOES/EVAL/build.cls = @P3Dataset
+D/P3ROTTENTOMATOES/EVAL/InterfaceInfo.interface = "mc"
+D/P3ROTTENTOMATOES/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3SAMSUM/P3SamsumDataset:
+    dataset_path = ["huggingface", "samsum"]
+
+D/P3SAMSUM/TRAIN/build.cls = @P3SamsumDataset
+D/P3SAMSUM/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3SAMSUM/EVAL/build.cls = @P3SamsumDataset
+D/P3SAMSUM/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 128
+D/P3SAMSUM/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["rouge"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3SCIQ/P3Dataset:
+    dataset_path = ["huggingface", "sciq"]
+
+D/P3SCIQ/TRAIN/build.cls = @P3Dataset
+D/P3SCIQ/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3SCIQ/EVAL/build.cls = @P3Dataset
+D/P3SCIQ/EVAL/InterfaceInfo.interface = "mc"
+D/P3SCIQ/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3TREC/P3Dataset:
+    dataset_path = ["huggingface", "trec"]
+
+D/P3TREC/TRAIN/build.cls = @P3TrecDataset
+D/P3TREC/TRAIN/P3Dataset:
+    batch_size = 8
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3TREC/EVAL/build.cls = @P3TrecDataset
+D/P3TREC/EVAL/InterfaceInfo.interface = "mc"
+D/P3TREC/EVAL/P3Dataset:
+    batch_size = 8
+    split = "test"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = []
+
+D/P3WIKIHOP/P3Dataset:
+    dataset_path = ["huggingface", "wiki_hop", "original"]
+
+D/P3WIKIHOP/TRAIN/build.cls = @P3Dataset
+D/P3WIKIHOP/TRAIN/P3Dataset:
+    batch_size = 2
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WIKIHOP/EVAL/build.cls = @P3Dataset
+D/P3WIKIHOP/EVAL/InterfaceInfo.interface = "mc"
+D/P3WIKIHOP/EVAL/P3Dataset:
+    batch_size = 4
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3WIQA/P3Dataset:
+    dataset_path = ["huggingface", "wiqa"]
+
+D/P3WIQA/TRAIN/build.cls = @P3Dataset
+D/P3WIQA/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WIQA/EVAL/build.cls = @P3Dataset
+D/P3WIQA/EVAL/InterfaceInfo.interface = "mc"
+D/P3WIQA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3XSUM/P3XSumDataset:
+    dataset_path = ["huggingface", "xsum"]
+
+D/P3XSUM/TRAIN/build.cls = @P3XSumDataset
+D/P3XSUM/TRAIN/P3Dataset:
+    batch_size = 8
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3XSUM/EVAL/build.cls = @P3XSumDataset
+D/P3XSUM/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 256
+D/P3XSUM/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["bleu", "rouge"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3YELP/P3Dataset:
+    dataset_path = ["huggingface", "yelp_review_full"]
+
+D/P3YELP/TRAIN/build.cls = @P3Dataset
+D/P3YELP/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3YELP/EVAL/build.cls = @P3Dataset
+D/P3YELP/EVAL/InterfaceInfo.interface = "mc"
+D/P3YELP/EVAL/P3Dataset:
+    split = "test"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/C4/C4Dataset:
+    dataset_path = "allenai/c4"
+    input_field = "text"
+    target_field = "text"
+
+D/C4/EVAL/build.cls = @C4Dataset
+D/C4/EVAL/InterfaceInfo.interface = "gen"
+D/C4/EVAL/C4Dataset:
+    split = "validation"
+    metrics = ["custom"]
+    max_length = 512
+    batch_size = 64
+    max_examples_per_dataset = 10_000
+
+# ---------------------------- Heldout ----------------------------#
+D/P3RTE/P3Dataset:
+    dataset_path = ["huggingface", "super_glue", "rte"]
+
+D/P3RTE/TRAIN/build.cls = @P3Dataset
+D/P3RTE/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3RTE/EVAL/build.cls = @P3Dataset
+D/P3RTE/EVAL/InterfaceInfo.interface = "mc"
+D/P3RTE/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    include_templates = "original"
+
+# 10 templates
+D/P3RTE/EVAL/T0/P3Dataset.include_templates = 0
+D/P3RTE/EVAL/T1/P3Dataset.include_templates = 1
+D/P3RTE/EVAL/T2/P3Dataset.include_templates = 2
+D/P3RTE/EVAL/T3/P3Dataset.include_templates = 3
+D/P3RTE/EVAL/T4/P3Dataset.include_templates = 4
+D/P3RTE/EVAL/T5/P3Dataset.include_templates = 5
+D/P3RTE/EVAL/T6/P3Dataset.include_templates = 6
+D/P3RTE/EVAL/T7/P3Dataset.include_templates = 7
+D/P3RTE/EVAL/T8/P3Dataset.include_templates = 8
+D/P3RTE/EVAL/T9/P3Dataset.include_templates = 9
+
+D/P3HSWAG/P3Dataset:
+    dataset_path = ["huggingface", "hellaswag"]
+
+D/P3HSWAG/TRAIN/build.cls = @P3Dataset
+D/P3HSWAG/TRAIN/P3Dataset:
+    batch_size = 4
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3HSWAG/EVAL/build.cls = @P3Dataset
+D/P3HSWAG/EVAL/InterfaceInfo.interface = "mc"
+D/P3HSWAG/EVAL/P3Dataset:
+    # TODO: Need to figure out manually added templates and one ignored template in merging code base
+    split = "validation"
+    metrics = ["accuracy"]
+    include_templates = "original"
+    batch_size = 16
+
+# 4 templates
+D/P3HSWAG/EVAL/T0/P3Dataset.include_templates = 0
+D/P3HSWAG/EVAL/T1/P3Dataset.include_templates = 1
+D/P3HSWAG/EVAL/T2/P3Dataset.include_templates = 2
+D/P3HSWAG/EVAL/T3/P3Dataset.include_templates = 3
+
+D/P3COPA/P3Dataset:
+    dataset_path = ["huggingface", "super_glue", "copa"]
+
+D/P3COPA/TRAIN/build.cls = @P3Dataset
+D/P3COPA/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3COPA/EVAL/build.cls = @P3Dataset
+D/P3COPA/EVAL/InterfaceInfo.interface = "mc"
+D/P3COPA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    ignore_templates = ["…which may be caused by", "…What could happen next, C1 or C2?", "…As a result, C1 or C2?", "…why? C1 or C2"]
+    include_templates = "original"
+
+# 8 templates
+D/P3COPA/EVAL/T0/P3Dataset.include_templates = 0
+D/P3COPA/EVAL/T1/P3Dataset.include_templates = 1
+D/P3COPA/EVAL/T2/P3Dataset.include_templates = 2
+D/P3COPA/EVAL/T3/P3Dataset.include_templates = 3
+D/P3COPA/EVAL/T4/P3Dataset.include_templates = 4
+D/P3COPA/EVAL/T5/P3Dataset.include_templates = 5
+D/P3COPA/EVAL/T6/P3Dataset.include_templates = 6
+D/P3COPA/EVAL/T7/P3Dataset.include_templates = 7
+
+D/P3WIC/P3Dataset:
+    dataset_path = ["huggingface", "super_glue", "wic"]
+
+D/P3WIC/TRAIN/build.cls = @P3Dataset
+D/P3WIC/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WIC/EVAL/build.cls = @P3Dataset
+D/P3WIC/EVAL/InterfaceInfo.interface = "mc"
+D/P3WIC/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    include_templates = "original"
+
+# 10 templates
+D/P3WIC/EVAL/T0/P3Dataset.include_templates = 0
+D/P3WIC/EVAL/T1/P3Dataset.include_templates = 1
+D/P3WIC/EVAL/T2/P3Dataset.include_templates = 2
+D/P3WIC/EVAL/T3/P3Dataset.include_templates = 3
+D/P3WIC/EVAL/T4/P3Dataset.include_templates = 4
+D/P3WIC/EVAL/T5/P3Dataset.include_templates = 5
+D/P3WIC/EVAL/T6/P3Dataset.include_templates = 6
+D/P3WIC/EVAL/T7/P3Dataset.include_templates = 7
+D/P3WIC/EVAL/T8/P3Dataset.include_templates = 8
+D/P3WIC/EVAL/T9/P3Dataset.include_templates = 9
+
+D/P3WINOGRANDE/P3Dataset:
+    dataset_path = ["huggingface", "winogrande", "winogrande_xl"]
+
+D/P3WINOGRANDE/TRAIN/build.cls = @P3Dataset
+D/P3WINOGRANDE/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WINOGRANDE/EVAL/build.cls = @P3Dataset
+D/P3WINOGRANDE/EVAL/InterfaceInfo.interface = "mc"
+D/P3WINOGRANDE/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    include_templates = "original"
+
+# 5 templates
+D/P3WINOGRANDE/EVAL/T0/P3Dataset.include_templates = 0
+D/P3WINOGRANDE/EVAL/T1/P3Dataset.include_templates = 1
+D/P3WINOGRANDE/EVAL/T2/P3Dataset.include_templates = 2
+D/P3WINOGRANDE/EVAL/T3/P3Dataset.include_templates = 3
+D/P3WINOGRANDE/EVAL/T4/P3Dataset.include_templates = 4
+
+D/P3CB/P3Dataset:
+    dataset_path = ["huggingface", "super_glue", "cb"]
+
+D/P3CB/TRAIN/build.cls = @P3Dataset
+D/P3CB/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3CB/EVAL/build.cls = @P3Dataset
+D/P3CB/EVAL/InterfaceInfo.interface = "mc"
+D/P3CB/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    include_templates = "original"
+
+# 15 templates
+D/P3CB/EVAL/T0/P3Dataset.include_templates = 0
+D/P3CB/EVAL/T1/P3Dataset.include_templates = 1
+D/P3CB/EVAL/T2/P3Dataset.include_templates = 2
+D/P3CB/EVAL/T3/P3Dataset.include_templates = 3
+D/P3CB/EVAL/T4/P3Dataset.include_templates = 4
+D/P3CB/EVAL/T5/P3Dataset.include_templates = 5
+D/P3CB/EVAL/T6/P3Dataset.include_templates = 6
+D/P3CB/EVAL/T7/P3Dataset.include_templates = 7
+D/P3CB/EVAL/T8/P3Dataset.include_templates = 8
+D/P3CB/EVAL/T9/P3Dataset.include_templates = 9
+D/P3CB/EVAL/T10/P3Dataset.include_templates = 10
+D/P3CB/EVAL/T11/P3Dataset.include_templates = 11
+D/P3CB/EVAL/T12/P3Dataset.include_templates = 12
+D/P3CB/EVAL/T13/P3Dataset.include_templates = 13
+D/P3CB/EVAL/T14/P3Dataset.include_templates = 14
+
+D/P3STORYCLOZE/P3StoryClozeDataset:
+    local_data_path = "src/datasets_offline/story_cloze/2016"
+    dataset_path = ["story_cloze", "2016"]
+
+D/P3STORYCLOZE/TRAIN/build.cls = @P3StoryClozeDataset
+D/P3STORYCLOZE/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3STORYCLOZE/EVAL/build.cls = @P3StoryClozeDataset
+D/P3STORYCLOZE/EVAL/InterfaceInfo.interface = "mc"
+D/P3STORYCLOZE/EVAL/P3Dataset:
+    split = "test"
+    metrics = ["accuracy"]
+    include_templates = "original"
+
+# 5 templates
+D/P3STORYCLOZE/EVAL/T0/P3Dataset.include_templates = 0
+D/P3STORYCLOZE/EVAL/T1/P3Dataset.include_templates = 1
+D/P3STORYCLOZE/EVAL/T2/P3Dataset.include_templates = 2
+D/P3STORYCLOZE/EVAL/T3/P3Dataset.include_templates = 3
+D/P3STORYCLOZE/EVAL/T4/P3Dataset.include_templates = 4
+
+D/P3ANLI/build.cls = @P3Dataset
+D/P3ANLI/InterfaceInfo.interface = "mc"
+D/P3ANLI/P3Dataset:
+    dataset_path = ["huggingface", "anli"]
+    metrics = ["accuracy"]
+    include_templates = "original"
+
+D/P3ANLI/R1/EVAL/P3Dataset.split = "dev_r1"
+D/P3ANLI/R2/EVAL/P3Dataset.split = "dev_r2"
+D/P3ANLI/R3/EVAL/P3Dataset.split = "dev_r3"
+
+# 15 templates
+D/P3ANLI/R1/EVAL/T0/P3Dataset.include_templates = 0
+D/P3ANLI/R1/EVAL/T1/P3Dataset.include_templates = 1
+D/P3ANLI/R1/EVAL/T2/P3Dataset.include_templates = 2
+D/P3ANLI/R1/EVAL/T3/P3Dataset.include_templates = 3
+D/P3ANLI/R1/EVAL/T4/P3Dataset.include_templates = 4
+D/P3ANLI/R1/EVAL/T5/P3Dataset.include_templates = 5
+D/P3ANLI/R1/EVAL/T6/P3Dataset.include_templates = 6
+D/P3ANLI/R1/EVAL/T7/P3Dataset.include_templates = 7
+D/P3ANLI/R1/EVAL/T8/P3Dataset.include_templates = 8
+D/P3ANLI/R1/EVAL/T9/P3Dataset.include_templates = 9
+D/P3ANLI/R1/EVAL/T10/P3Dataset.include_templates = 10
+D/P3ANLI/R1/EVAL/T11/P3Dataset.include_templates = 11
+D/P3ANLI/R1/EVAL/T12/P3Dataset.include_templates = 12
+D/P3ANLI/R1/EVAL/T13/P3Dataset.include_templates = 13
+D/P3ANLI/R1/EVAL/T14/P3Dataset.include_templates = 14
+
+# 15 templates
+D/P3ANLI/R2/EVAL/T0/P3Dataset.include_templates = 0
+D/P3ANLI/R2/EVAL/T1/P3Dataset.include_templates = 1
+D/P3ANLI/R2/EVAL/T2/P3Dataset.include_templates = 2
+D/P3ANLI/R2/EVAL/T3/P3Dataset.include_templates = 3
+D/P3ANLI/R2/EVAL/T4/P3Dataset.include_templates = 4
+D/P3ANLI/R2/EVAL/T5/P3Dataset.include_templates = 5
+D/P3ANLI/R2/EVAL/T6/P3Dataset.include_templates = 6
+D/P3ANLI/R2/EVAL/T7/P3Dataset.include_templates = 7
+D/P3ANLI/R2/EVAL/T8/P3Dataset.include_templates = 8
+D/P3ANLI/R2/EVAL/T9/P3Dataset.include_templates = 9
+D/P3ANLI/R2/EVAL/T10/P3Dataset.include_templates = 10
+D/P3ANLI/R2/EVAL/T11/P3Dataset.include_templates = 11
+D/P3ANLI/R2/EVAL/T12/P3Dataset.include_templates = 12
+D/P3ANLI/R2/EVAL/T13/P3Dataset.include_templates = 13
+D/P3ANLI/R2/EVAL/T14/P3Dataset.include_templates = 14
+
+# 15 templates
+D/P3ANLI/R3/EVAL/T0/P3Dataset.include_templates = 0
+D/P3ANLI/R3/EVAL/T1/P3Dataset.include_templates = 1
+D/P3ANLI/R3/EVAL/T2/P3Dataset.include_templates = 2
+D/P3ANLI/R3/EVAL/T3/P3Dataset.include_templates = 3
+D/P3ANLI/R3/EVAL/T4/P3Dataset.include_templates = 4
+D/P3ANLI/R3/EVAL/T5/P3Dataset.include_templates = 5
+D/P3ANLI/R3/EVAL/T6/P3Dataset.include_templates = 6
+D/P3ANLI/R3/EVAL/T7/P3Dataset.include_templates = 7
+D/P3ANLI/R3/EVAL/T8/P3Dataset.include_templates = 8
+D/P3ANLI/R3/EVAL/T9/P3Dataset.include_templates = 9
+D/P3ANLI/R3/EVAL/T10/P3Dataset.include_templates = 10
+D/P3ANLI/R3/EVAL/T11/P3Dataset.include_templates = 11
+D/P3ANLI/R3/EVAL/T12/P3Dataset.include_templates = 12
+D/P3ANLI/R3/EVAL/T13/P3Dataset.include_templates = 13
+D/P3ANLI/R3/EVAL/T14/P3Dataset.include_templates = 14
+
+D/P3WSCFIXED/P3Dataset:
+    dataset_path = ["huggingface", "super_glue", "wsc.fixed"]
+
+D/P3WSCFIXED/TRAIN/build.cls = @P3Dataset
+D/P3WSCFIXED/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WSCFIXED/EVAL/build.cls = @P3Dataset
+D/P3WSCFIXED/EVAL/InterfaceInfo.interface = "mc"
+D/P3WSCFIXED/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    include_templates = "original"
+
+# 10 templates
+D/P3WSCFIXED/EVAL/T0/P3Dataset.include_templates = 0
+D/P3WSCFIXED/EVAL/T1/P3Dataset.include_templates = 1
+D/P3WSCFIXED/EVAL/T2/P3Dataset.include_templates = 2
+D/P3WSCFIXED/EVAL/T3/P3Dataset.include_templates = 3
+D/P3WSCFIXED/EVAL/T4/P3Dataset.include_templates = 4
+D/P3WSCFIXED/EVAL/T5/P3Dataset.include_templates = 5
+D/P3WSCFIXED/EVAL/T6/P3Dataset.include_templates = 6
+D/P3WSCFIXED/EVAL/T7/P3Dataset.include_templates = 7
+D/P3WSCFIXED/EVAL/T8/P3Dataset.include_templates = 8
+D/P3WSCFIXED/EVAL/T9/P3Dataset.include_templates = 9
+
+# ---------------------------- GLUE ----------------------------#
+D/P3MNLI/P3Dataset:
+    dataset_path = ["huggingface", "glue", "mnli"]
+
+D/P3MNLI/TRAIN/build.cls = @P3Dataset
+D/P3MNLI/TRAIN/P3Dataset:
+    batch_size = 16
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3MNLI/EVAL/build.cls = @P3Dataset
+D/P3MNLI/EVAL/InterfaceInfo.interface = "mc"
+D/P3MNLI/EVAL/P3Dataset:
+    split = "validation_matched"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3SNLI/P3Dataset:
+    dataset_path = ["huggingface", "snli"]
+
+D/P3SNLI/TRAIN/build.cls = @P3Dataset
+D/P3SNLI/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3SNLI/EVAL/build.cls = @P3Dataset
+D/P3SNLI/EVAL/InterfaceInfo.interface = "mc"
+D/P3SNLI/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+    max_pretemplate_examples_per_dataset = 10_000
+
+D/P3COLA/P3Dataset:
+    dataset_path = ["huggingface", "glue", "cola"]
+
+D/P3COLA/TRAIN/build.cls = @P3Dataset
+D/P3COLA/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3COLA/EVAL/build.cls = @P3Dataset
+D/P3COLA/EVAL/InterfaceInfo.interface = "mc"
+D/P3COLA/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["matthews_correlation"]
+    round_robin_template = True
+    include_templates = "original"
+
+#----------------------------- 8 Generation tasks -----------------------------#
+D/WIKIAUTO/EVAL/build.cls = @CBKGenDataset
+D/WIKIAUTO/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/WIKIAUTO/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/wiki_auto/simplification_1.test.json", "src/datasets_offline/ct0_data/wiki_auto/simplification_2.test.json"]
+    metrics = ["bleu"]
+
+D/ELMGIGAWORD/EVAL/build.cls = @CBKGenDataset
+D/ELMGIGAWORD/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/ELMGIGAWORD/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/gigaword/make_a_title.test.json", "src/datasets_offline/ct0_data/gigaword/write_its_sentence.test.json"]
+    metrics = ["rouge"]
+
+D/HAIKU/EVAL/build.cls = @CBKGenDataset
+D/HAIKU/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/HAIKU/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/haiku/do_nothing.test.json"]
+    metrics = ["rouge"]
+
+D/COVIDQA/EVAL/build.cls = @CovidqaDataset
+D/COVIDQA/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/COVIDQA/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/covid_qa_deepset/covid_cloze_book_qa.train.json"]
+    metrics = ["bertscore"]
+
+D/ELI5/EVAL/build.cls = @CBKGenDataset
+D/ELI5/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/ELI5/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/eli5/generate_a_question_1.test_asks.json"]
+    metrics = ["bertscore"]
+
+D/EMDG/EVAL/build.cls = @CBKGenDataset
+D/EMDG/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 16
+D/EMDG/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/empathetic_dialogues/dialogue_with_emotion.test.json"]
+    metrics = ["bertscore"]
+
+D/ESNLI/EVAL/build.cls = @CBKGenDataset
+D/ESNLI/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/ESNLI/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/eSNLI/explain_why.test.json"]
+    metrics = ["bertscore"]
+
+D/TWITTER/EVAL/build.cls = @CBKGenDataset
+D/TWITTER/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 64
+D/TWITTER/EVAL/P3Dataset:
+    split = "validation"
+    dataset_path = ["src/datasets_offline/ct0_data/twitter_top20/tweet_as+about.test.json"]
+    metrics = ["bertscore"]
+
+D/P3RACEHIGH/P3Dataset:
+    dataset_path = ["huggingface", "race", "high"]
+
+D/P3RACEHIGH/TRAIN/build.cls = @P3Dataset
+D/P3RACEHIGH/TRAIN/P3Dataset:
+    batch_size = 2
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3RACEHIGH/EVAL/build.cls = @P3Dataset
+D/P3RACEHIGH/EVAL/InterfaceInfo.interface = "mc"
+D/P3RACEHIGH/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3RACEMIDDLE/P3Dataset:
+    dataset_path = ["huggingface", "race", "middle"]
+
+D/P3RACEMIDDLE/TRAIN/build.cls = @P3Dataset
+D/P3RACEMIDDLE/TRAIN/P3Dataset:
+    batch_size = 2
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3RACEMIDDLE/EVAL/build.cls = @P3Dataset
+D/P3RACEMIDDLE/EVAL/InterfaceInfo.interface = "mc"
+D/P3RACEMIDDLE/EVAL/P3Dataset:
+    split = "validation"
+    metrics = ["accuracy"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/P3WEBQUESTIONS/P3Dataset:
+    dataset_path = ["huggingface", "web_questions"]
+
+D/P3WEBQUESTIONS/TRAIN/build.cls = @P3WebQuestionsDataset
+D/P3WEBQUESTIONS/TRAIN/P3Dataset:
+    batch_size = 32
+    split = "train"
+    max_examples_per_dataset = 500_000
+
+D/P3WEBQUESTIONS/EVAL/build.cls = @P3WebQuestionsDataset
+D/P3WEBQUESTIONS/EVAL/InterfaceInfo:
+    interface = "gen"
+    max_gen_length = 32
+D/P3WEBQUESTIONS/EVAL/P3Dataset:
+    split = "test"
+    metrics = ["rouge"]
+    round_robin_template = True
+    include_templates = "original"
+
+D/LUDWIG/ZS/P3Dataset:
+    dataset_path = ["huggingface", "UCL-DARK/ludwig", "0-shot"]
+
+D/LUDWIG/ZS/EVAL/build.cls = @LudwigDataset
+D/LUDWIG/ZS/EVAL/InterfaceInfo.interface = "mc"
+D/LUDWIG/ZS/EVAL/P3Dataset:
+    split = "test"
+    metrics = ["accuracy"]
+    include_templates = "all"

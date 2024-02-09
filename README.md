@@ -81,8 +81,12 @@ python scripts/manipulations.py --gin_bindings 'average_outer_product_lora_weigh
 ```
 
 
-## Note
-We will soon release the checkpoints trained as part of the project.
+## Models and Datasets
+We provide checkpoints for PHATGOOSE, along with baselines such as Average Activation, Merged Experts, and Retrieval, accessible at our [Hugging Face repository](https://huggingface.co/r-three).
+
+For individual experts, we recommend splitting any checkpoint other than Merged Experts. Each checkpoint contains keys for an expert ending with `layer1__i`, `layer2__i`, indicating the LoRA parameters of the expert `i` trained on dataset `i`. The sequence of datasets is detailed in the [`scripts/concatenate.py` file](scripts/concatenate.py). 
+
+Datasets including T0 Held-in and BIG-bench are available through Hugging Face. For the FLAN dataset, we will provide a processed version soon, sourced from the [FLAN dataset on Hugging Face](https://huggingface.co/datasets/Open-Orca/FLAN).
 
 ## Evaluation
 Here are the scripts for evaluating different methods:

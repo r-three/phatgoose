@@ -343,7 +343,13 @@ class Router(ExtendableAddon):
             self.has_pre_forward = False
             self.has_post_forward = True
         self.expert_dropout = expert_dropout
-        assert self.score_type in ["dot", "cosine", "weighted_cosine", "original"]
+        assert self.score_type in [
+            "dot",
+            "cosine",
+            "weighted_cosine",
+            "original",
+            "Arrow",
+        ]
         self.epsilon = epsilon
         self.parallel_axis = parallel_axis
         self.scaling_scores = scaling_scores
@@ -487,7 +493,7 @@ class Router(ExtendableAddon):
                 )
                 * pretrained_expert_embedding_normalized
             )
-        if self.score_type == "dot":
+        if self.score_type == "dot" or self.score_type == "Arrow":
             expert_embeddings = self.expert_embeddings
         elif self.score_type in ["cosine", "weighted_cosine"]:
             router_hidden_states = router_hidden_states / (
@@ -510,6 +516,8 @@ class Router(ExtendableAddon):
             else:
                 expert_embeddings = self.expert_embeddings
         scores = torch.matmul(router_hidden_states, expert_embeddings.T)
+        if self.score_type == "Arrow":
+            scores = torch.abs(scores / self.temperature)
         if self.scaling_scores:
             scores = scores * math.sqrt(1 / self.d_router)
         if self.mask_out_zero_expert:

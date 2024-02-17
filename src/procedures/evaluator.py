@@ -80,14 +80,6 @@ class Evaluator(Procedure):
                     continue
                 data_loader = self.batcher.build(dataset)
                 for batch_idx, batch_inputs in enumerate(data_loader):
-                    # data_dict = {}
-                    # input_tokens = self.model.tokenizer.tokenize(batch_inputs['input_str'][0])
-                    # print(f"first {len(input_tokens)}: {input_tokens}\n")
-                    # data_dict['example_first'] = input_tokens
-                    # input_tokens = self.model.tokenizer.tokenize(batch_inputs['input_str'][-1])
-                    # print(f"last {len(input_tokens)}: {input_tokens}\n")
-                    # data_dict['example_last'] = input_tokens
-                    # batch_outputs = self.model(batch_inputs, dataset.interface_info, data_dict)
                     batch_outputs = self.model(batch_inputs, dataset.interface_info, {})
                     self.scorer[dataset.name].add_batch(batch_inputs, batch_outputs)
                     for analysis_processor in self.analysis_processors:

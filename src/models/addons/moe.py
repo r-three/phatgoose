@@ -239,29 +239,12 @@ class ExtendableAddon(Addon):
         "router_type",
         "score_type",
         "epsilon",
-        "expert_dropout",
         "scaling_scores",
         "elementwise_affine",
-        "orthogonal_penalty_weight",
-        "orthogonal_type",
-        "write_orthogonal_penalty_key",
-        "tag_penalty_weight",
-        "tag_penalty_type",
-        "tag_supervision_ratio",
-        "write_tag_penalty_key",
-        "entropy_penalty_weight",
-        "write_entropy_penalty_key",
         "temperature",
         "anneal_step",
         "anneal_rate",
-        "subspace_penalty_type",
-        "write_subspace_penalty_key",
-        "subspace_penalty_weight",
-        "ol_aggregate_type",
         "router_norm_type",
-        "remove_pretrained_method",
-        "mask_out_zero_expert",
-        "trainable_index",
         "position",
         "is_retriever",
     ],
@@ -289,29 +272,12 @@ class Router(ExtendableAddon):
         score_type="original",
         epsilon=1e-6,
         parallel_axis="none",
-        expert_dropout=0,
         scaling_scores=True,
         elementwise_affine=False,
-        orthogonal_penalty_weight=0,
-        orthogonal_type=None,
-        write_orthogonal_penalty_key=("loss", "router", "ol"),
-        tag_penalty_weight=0,
-        tag_penalty_type=None,
-        tag_supervision_ratio=0.1,
-        write_tag_penalty_key=("loss", "router", "tl"),
-        entropy_penalty_weight=0,
-        write_entropy_penalty_key=("loss", "router", "el"),
-        subspace_penalty_type="remove_orth_component",
-        subspace_penalty_weight=0,
-        write_subspace_penalty_key=("loss", "router", "sl"),
         temperature=10,
         anneal_step=10,
         anneal_rate=1e-2,
-        ol_aggregate_type="mean",
         router_norm_type="layer_norm",
-        remove_pretrained_method=None,
-        mask_out_zero_expert=False,
-        trainable_index=None,
         is_retriever=False,
     ):
         """
@@ -342,53 +308,24 @@ class Router(ExtendableAddon):
         elif self.position == "after":
             self.has_pre_forward = False
             self.has_post_forward = True
-        self.expert_dropout = expert_dropout
         assert self.score_type in [
             "dot",
             "cosine",
             "weighted_cosine",
             "original",
-            "Arrow",
+            "arrow",
         ]
         self.epsilon = epsilon
         self.parallel_axis = parallel_axis
         self.scaling_scores = scaling_scores
         self.elementwise_affine = elementwise_affine
         self._resolve_ref_attrs(host_module)
-        self.orthogonal_penalty_weight = orthogonal_penalty_weight
-        self.orthogonal_type = orthogonal_type
-        self.write_orthogonal_penalty_key = write_orthogonal_penalty_key
-        self.tag_penalty_weight = tag_penalty_weight
-        self.tag_penalty_type = tag_penalty_type
-        self.tag_supervision_ratio = tag_supervision_ratio
-        self.write_tag_penalty_key = write_tag_penalty_key
-        self.entropy_penalty_weight = entropy_penalty_weight
-        self.write_entropy_penalty_key = write_entropy_penalty_key
         self.anneal_rate = anneal_rate
         self.anneal_step = anneal_step
         self.temperature = temperature
         self.temperature_schedule = self._get_temperature_schedule(temperature)
-        self.subspace_penalty_type = subspace_penalty_type
-        self.write_subspace_penalty_key = write_subspace_penalty_key
-        self.subspace_penalty_weight = subspace_penalty_weight
-        self.ol_aggregate_type = ol_aggregate_type
         self.router_norm_type = router_norm_type
-        self.remove_pretrained_method = remove_pretrained_method
-        self.mask_out_zero_expert = mask_out_zero_expert
-        self.trainable_index = trainable_index
         self.is_retriever = is_retriever
-        assert self.tag_penalty_type is None or self.tag_penalty_type in [
-            "l1",
-            "l2",
-            "ce",
-        ]
-        assert self.orthogonal_type is None or self.orthogonal_type in [
-            "l1",
-            "l1_relu",
-            "l2",
-            "l2_relu",
-            "remove_sub_component",
-        ]
 
         if self.score_type == "dot":
             pass
@@ -416,16 +353,6 @@ class Router(ExtendableAddon):
             )
             temperature_schedule[current_step] = curr_temperature
         return temperature_schedule
-
-    def _gram_schmidt(self, vectors):
-        basis = []
-        for v in vectors:
-            w = v - sum(torch.dot(v, u) / torch.dot(u, u) * u for u in basis)
-            if torch.norm(w) > 1e-6:  # Avoid adding zero-length vectors
-                basis.append(w)
-        orthonormal_basis = [u / torch.norm(u + self.epsilon) for u in basis]
-        orthonormal_basis = torch.stack(orthonormal_basis)
-        return orthonormal_basis
 
     def _forward(self, router_hidden_states):
         """
@@ -464,36 +391,7 @@ class Router(ExtendableAddon):
             routing_weights = routing_weights.to(self.expert_embeddings.dtype)
             return routing_weights
 
-        if (
-            self.remove_pretrained_method
-            and "before_layer_norm" in self.remove_pretrained_method
-        ):
-            # remove pretrained component from router hidden states
-            pretrained_expert_embedding = self.expert_embeddings[0]
-            pretrained_expert_embedding_normalized = pretrained_expert_embedding / (
-                torch.norm(pretrained_expert_embedding) + self.epsilon
-            )
-            pretrained_expert_embedding_normalized = (
-                pretrained_expert_embedding_normalized.unsqueeze(0)
-            )
-            if "remove_from_input" in self.remove_pretrained_method:
-                router_hidden_states = (
-                    router_hidden_states
-                    - torch.matmul(
-                        router_hidden_states,
-                        pretrained_expert_embedding_normalized.T,
-                    )
-                    * pretrained_expert_embedding_normalized
-                )
-            self.expert_embeddings = (
-                self.expert_embeddings
-                - torch.matmul(
-                    self.expert_embeddings,
-                    pretrained_expert_embedding_normalized.T,
-                )
-                * pretrained_expert_embedding_normalized
-            )
-        if self.score_type == "dot" or self.score_type == "Arrow":
+        if self.score_type == "dot" or self.score_type == "arrow":
             expert_embeddings = self.expert_embeddings
         elif self.score_type in ["cosine", "weighted_cosine"]:
             router_hidden_states = router_hidden_states / (
@@ -516,21 +414,18 @@ class Router(ExtendableAddon):
             else:
                 expert_embeddings = self.expert_embeddings
         scores = torch.matmul(router_hidden_states, expert_embeddings.T)
-        if self.score_type == "Arrow":
+        if self.score_type == "arrow":
             scores = torch.abs(scores / self.temperature)
         if self.scaling_scores:
             scores = scores * math.sqrt(1 / self.d_router)
-        if self.mask_out_zero_expert:
-            mask = torch.zeros_like(scores)
-            mask[:, 0] = float("-inf")
-            scores = scores + mask
         if self.router_type in ["smear", "top1"]:
             routing_weights = torch.softmax(scores, dim=-1)
         elif self.router_type == "st-gumbel":
-            # TODO(Muqeeth): implement st-gumbel routing
             if self.training:
                 U = torch.rand(scores.shape).to(self.config.device)
-                modified_scores = scores + (
+                probs = F.softmax(scores, dim=-1)
+                log_probs = torch.log(probs + self.epsilon)
+                modified_scores = log_probs + (
                     -torch.log(-torch.log(U + self.epsilon) + self.epsilon)
                 )
                 current_step = self.global_hidden_dict["current_step"]
@@ -584,218 +479,11 @@ class Router(ExtendableAddon):
                 else:
                     routing_weights = torch.softmax(scores, dim=-1)
 
-        if self.training and self.expert_dropout > 0:
-            ones = torch.ones(routing_weights.shape)
-            zeros = torch.zeros(routing_weights.shape)
-            random_tensor = torch.rand(routing_weights.shape)
-            mask = torch.where(random_tensor < self.expert_dropout, zeros, ones)
-            mask = mask.to(routing_weights.device)
-            routing_weights = routing_weights * mask
-            routing_weights = (routing_weights + self.epsilon) / torch.sum(
-                (routing_weights + self.epsilon), dim=-1, keepdim=True
-            )
-
         if self.router_type == "top1":
             top1_idx = torch.argmax(routing_weights, dim=-1, keepdim=True)
             top1_mask = torch.zeros_like(routing_weights).scatter_(-1, top1_idx, 1)
             routing_weights = top1_mask * routing_weights
-        if self.orthogonal_type and self.orthogonal_penalty_weight > 0:
-            if self.orthogonal_type == "remove_sub_component":
-                if self.remove_pretrained_method is None:
-                    if self.pretrained_component:
-                        pretrained_expert_embedding = expert_embeddings[0]
-                        pretrained_expert_embedding_normalized = (
-                            pretrained_expert_embedding
-                            / (torch.norm(pretrained_expert_embedding) + self.epsilon)
-                        )
-                        expert_embeddings_orthogonal_to_pretrained = []
-                        for index in range(1, self.num_experts):
-                            expert_embedding_along_pretrained = (
-                                torch.matmul(
-                                    expert_embeddings[index],
-                                    pretrained_expert_embedding_normalized,
-                                )
-                                * pretrained_expert_embedding_normalized
-                            )
-                            expert_embedding_orthogonal_to_pretrained = (
-                                expert_embeddings[index]
-                                - expert_embedding_along_pretrained
-                            )
-                            expert_embeddings_orthogonal_to_pretrained.append(
-                                expert_embedding_orthogonal_to_pretrained
-                            )
-                        if self.trainable_index:
-                            basis = self._gram_schmidt(
-                                expert_embeddings_orthogonal_to_pretrained[
-                                    : self.trainable_index
-                                ]
-                                + expert_embeddings_orthogonal_to_pretrained[
-                                    self.trainable_index + 1 :
-                                ]
-                            )
-                            new_expert_embedding_normalized = (
-                                expert_embeddings_orthogonal_to_pretrained[
-                                    self.trainable_index
-                                ]
-                                / (
-                                    torch.norm(
-                                        expert_embeddings_orthogonal_to_pretrained[
-                                            self.trainable_index
-                                        ]
-                                    )
-                                    + self.epsilon
-                                )
-                            )
-                        else:
-                            expert_embeddings_orthogonal_to_pretrained = torch.stack(
-                                expert_embeddings_orthogonal_to_pretrained
-                            )
-                            basis = self._gram_schmidt(
-                                expert_embeddings_orthogonal_to_pretrained[:-1]
-                            )
-                            new_expert_embedding_normalized = (
-                                expert_embeddings_orthogonal_to_pretrained[-1]
-                                / (
-                                    torch.norm(
-                                        expert_embeddings_orthogonal_to_pretrained[-1]
-                                    )
-                                    + self.epsilon
-                                )
-                            )
-                    else:
-                        basis = self._gram_schmidt(expert_embeddings[:-1])
-                        new_expert_embedding_normalized = expert_embeddings[-1] / (
-                            torch.norm(expert_embeddings[-1]) + self.epsilon
-                        )
-                else:
-                    basis = self._gram_schmidt(expert_embeddings[:-1])
-                    new_expert_embedding_normalized = expert_embeddings[-1] / (
-                        torch.norm(expert_embeddings[-1]) + self.epsilon
-                    )
-                subspace_expert_embedding = torch.matmul(
-                    torch.matmul(new_expert_embedding_normalized.unsqueeze(0), basis.T),
-                    basis,
-                )
-                orthogonal_penalty_loss = torch.sum(
-                    subspace_expert_embedding**2, dim=-1
-                ).mean()
-            else:
-                normalized_expert_embeddings = expert_embeddings / (
-                    torch.norm(expert_embeddings, dim=-1, keepdim=True) + self.epsilon
-                )
-                similarity = torch.matmul(
-                    normalized_expert_embeddings, normalized_expert_embeddings.T
-                )
-                if "relu" in self.orthogonal_type:
-                    orthogonal_penalty_loss = F.relu(similarity)
-                else:
-                    orthogonal_penalty_loss = similarity
-                if "l1" in self.orthogonal_type:
-                    orthogonal_penalty_loss = torch.abs(orthogonal_penalty_loss)
-                elif "l2" in self.orthogonal_type:
-                    orthogonal_penalty_loss = orthogonal_penalty_loss**2
 
-                orthogonal_penalty_loss = orthogonal_penalty_loss - torch.diag(
-                    torch.diag(orthogonal_penalty_loss)
-                )
-                # TODO: Fix the below line based on the number of newly added experts
-                orthogonal_penalty_loss = orthogonal_penalty_loss[-1]
-                if self.ol_aggregate_type == "mean":
-                    orthogonal_penalty_loss = orthogonal_penalty_loss.mean()
-                elif self.ol_aggregate_type == "sum":
-                    orthogonal_penalty_loss = orthogonal_penalty_loss.sum()
-            orthogonal_penalty_loss = (
-                orthogonal_penalty_loss * self.orthogonal_penalty_weight
-            )
-            if self.write_orthogonal_penalty_key in self.global_hidden_dict:
-                self.global_hidden_dict[self.write_orthogonal_penalty_key].append(
-                    orthogonal_penalty_loss
-                )
-            else:
-                self.global_hidden_dict[self.write_orthogonal_penalty_key] = [
-                    orthogonal_penalty_loss
-                ]
-        if self.tag_penalty_type and self.tag_penalty_weight > 0:
-            if self.tag_penalty_type == "l1":
-                # take last expert embedding and make it close to router hidden states
-                tag_penalty_loss = torch.abs(
-                    expert_embeddings[-1] - router_hidden_states
-                )
-            elif self.tag_penalty_type == "l2":
-                tag_penalty_loss = (expert_embeddings[-1] - router_hidden_states) ** 2
-                mask = torch.rand(tag_penalty_loss.shape[0]) > (
-                    1 - self.tag_supervision_ratio
-                )
-                mask = mask.to(tag_penalty_loss.device)
-                tag_penalty_loss = mask[:, None] * tag_penalty_loss
-            elif self.tag_penalty_type == "ce":
-                # take cross entropy loss of routing weights and one hot vector of last expert
-                targets = torch.ones(routing_weights.shape[0]).to(
-                    routing_weights.device
-                ).long() * (self.num_experts - 1)
-                # fill (1 - tag_supervision_ratio)% of values in targets with -100 using random mask
-                mask = torch.rand(targets.shape) < (1 - self.tag_supervision_ratio)
-                mask = mask.to(targets.device)
-                targets = targets.masked_fill(mask, -100)
-                tag_penalty_loss = F.cross_entropy(scores, targets, reduction="none")
-            tag_penalty_loss = tag_penalty_loss.mean()
-            tag_penalty_loss = tag_penalty_loss * self.tag_penalty_weight
-            if self.write_tag_penalty_key in self.global_hidden_dict:
-                self.global_hidden_dict[self.write_tag_penalty_key].append(
-                    tag_penalty_loss
-                )
-            else:
-                self.global_hidden_dict[self.write_tag_penalty_key] = [tag_penalty_loss]
-        if self.entropy_penalty_weight > 0:
-            entropy_penalty_loss = -torch.sum(
-                routing_weights * torch.log(routing_weights + self.epsilon), dim=-1
-            )
-            entropy_penalty_loss = entropy_penalty_loss.mean()
-            entropy_penalty_loss = entropy_penalty_loss * self.entropy_penalty_weight
-            if self.write_entropy_penalty_key in self.global_hidden_dict:
-                self.global_hidden_dict[self.write_entropy_penalty_key].append(
-                    entropy_penalty_loss
-                )
-            else:
-                self.global_hidden_dict[self.write_entropy_penalty_key] = [
-                    entropy_penalty_loss
-                ]
-        if self.subspace_penalty_weight > 0:
-            if self.subspace_penalty_type == "remove_orth_component":
-                basis = self._gram_schmidt(expert_embeddings)
-                router_hidden_states_normalized = router_hidden_states / (
-                    torch.norm(router_hidden_states, dim=-1, keepdim=True)
-                    + self.epsilon
-                )
-                orth_router_hidden_states = (
-                    router_hidden_states_normalized
-                    - torch.matmul(
-                        torch.matmul(router_hidden_states_normalized, basis.T),
-                        basis,
-                    )
-                )
-                subspace_penalty_loss = torch.sum(
-                    orth_router_hidden_states**2, dim=-1
-                )
-            else:
-                X = torch.matmul(router_hidden_states, expert_embeddings.T)
-                # FIX IT
-                recons_router_hidden_states = (
-                    torch.matmul(X, expert_embeddings) / 1024.0
-                )
-                subspace_penalty_loss = (
-                    recons_router_hidden_states - router_hidden_states
-                ) ** 2
-            subspace_penalty_loss = subspace_penalty_loss.mean()
-            subspace_penalty_loss = subspace_penalty_loss * self.subspace_penalty_weight
-            if self.write_subspace_penalty_key in self.global_hidden_dict:
-                self.global_hidden_dict[self.write_subspace_penalty_key].append(
-                    subspace_penalty_loss
-                )
-            else:
-                self.global_hidden_dict[self.write_subspace_penalty_key] = [
-                    subspace_penalty_loss
-                ]
         routing_weights = routing_weights.to(hidden_states_dtype)
         return routing_weights
 
@@ -836,7 +524,6 @@ class Router(ExtendableAddon):
         "non_linearity",
         "position",
         "residual_connection",
-        "layer_norm_position",
         "one_hot",
         "normalize_topk",
         "topk_value",
@@ -844,8 +531,6 @@ class Router(ExtendableAddon):
         "init_scale",
         "epsilon",
         "replace_with_weighted_hiddens",
-        "replace_weighted_hiddens_type",
-        "learn_output_gate",
         "learn_input_gate",
         "use_input_gate",
     ],
@@ -878,12 +563,9 @@ class FFNExperts(ExtendableAddon):
         topk_value=None,
         position="beside",
         residual_connection=False,
-        layer_norm_position=None,
         parallel_axis="none",
         divide_by_d_bottleneck=False,
         replace_with_weighted_hiddens=False,
-        replace_weighted_hiddens_type=None,
-        learn_output_gate=None,
         learn_input_gate=None,
         use_input_gate=False,
         init_scale=0.01,
@@ -915,33 +597,17 @@ class FFNExperts(ExtendableAddon):
         self.one_hot = one_hot
         self.topk_value = topk_value
         self.residual_connection = residual_connection
-        self.layer_norm_position = layer_norm_position
         self.epsilon = epsilon
         self.parallel_axis = parallel_axis
         self.init_scale = init_scale
         self.normalize_topk = normalize_topk
         self.replace_with_weighted_hiddens = replace_with_weighted_hiddens
-        self.replace_weighted_hiddens_type = replace_weighted_hiddens_type
-        self.learn_output_gate = learn_output_gate
         self.learn_input_gate = learn_input_gate
         self.use_input_gate = use_input_gate
         self._resolve_ref_attrs(host_module)
-        if self.learn_output_gate is not None:
-            self.expert_output_gate = nn.Parameter(torch.zeros(self.d_out))
-            self.temperature = None
         if self.learn_input_gate is not None:
             self.expert_input_gate = nn.Parameter(torch.zeros(self.d_in))
             self.temperature = None
-        if (
-            self.replace_weighted_hiddens_type
-            and "outgate_learned" in self.replace_weighted_hiddens_type
-        ):
-            self.expert_output_gate = nn.Parameter(torch.zeros(self.d_out))
-        if (
-            self.replace_weighted_hiddens_type
-            and "ingate_learned" in self.replace_weighted_hiddens_type
-        ):
-            self.expert_input_gate = nn.Parameter(torch.zeros(self.d_in))
         assert not self.residual_connection or self.d_in == self.d_out
         assert self.parallel_axis in ["none", "d_in", "d_bottleneck", "d_out"]
         assert self.position in ["before", "beside", "after"]
@@ -961,22 +627,7 @@ class FFNExperts(ExtendableAddon):
             self.activation_fn = lambda x: x
         else:
             self.activation_fn = ACT2FN[non_linearity]
-        if self.layer_norm_position == "before":
-            self._extendable_parameters = [
-                "layer1",
-                "layer2",
-                "input_layer_norm_weight",
-                "input_layer_norm_bias",
-            ]
-        elif self.layer_norm_position == "after":
-            self._extendable_parameters = [
-                "layer1",
-                "layer2",
-                "output_layer_norm_weight",
-                "output_layer_norm_bias",
-            ]
-        else:
-            self._extendable_parameters = ["layer1", "layer2"]
+        self._extendable_parameters = ["layer1", "layer2"]
 
     def _get_init_weights(self, num_new_experts):
         layer1 = nn.Parameter(
@@ -991,34 +642,7 @@ class FFNExperts(ExtendableAddon):
             layer2 = nn.Parameter(
                 torch.randn(num_new_experts, self.d_bottleneck, self.d_out) * 0.0
             )
-        if self.layer_norm_position == "before":
-            input_layer_norm_weight = nn.Parameter(
-                torch.ones(num_new_experts, self.d_in)
-            )
-            input_layer_norm_bias = nn.Parameter(
-                torch.zeros(num_new_experts, self.d_in)
-            )
-            return {
-                "layer1": layer1,
-                "layer2": layer2,
-                "input_layer_norm_weight": input_layer_norm_weight,
-                "input_layer_norm_bias": input_layer_norm_bias,
-            }
-        elif self.layer_norm_position == "after":
-            output_layer_norm_weight = nn.Parameter(
-                torch.ones(num_new_experts, self.d_out)
-            )
-            output_layer_norm_bias = nn.Parameter(
-                torch.zeros(num_new_experts, self.d_out)
-            )
-            return {
-                "layer1": layer1,
-                "layer2": layer2,
-                "output_layer_norm_weight": output_layer_norm_weight,
-                "output_layer_norm_bias": output_layer_norm_bias,
-            }
-        else:
-            return {"layer1": layer1, "layer2": layer2}
+        return {"layer1": layer1, "layer2": layer2}
 
     def _forward(self, input_hidden, routing_weights):
         """
@@ -1030,10 +654,9 @@ class FFNExperts(ExtendableAddon):
         """
         if self.separate_experts:
             self._assemble_extendable_parameters()
-        if self.layer_norm_position == "before":
-            raise NotImplementedError
 
         if len(routing_weights.shape) == 3:
+            # code adapted from https://github.com/davidmrau/mixture-of-experts/blob/master/moe.py
             # if routing_weights has token dim, then route using dispatcher
             assert self.topk_value is not None
             bs, seq_len, _ = input_hidden.shape
@@ -1047,7 +670,6 @@ class FFNExperts(ExtendableAddon):
             topk_weights, topk_indices = torch.topk(
                 routing_weights, self.topk_value, dim=-1
             )
-            # normalize topk_weights again? Not sure
             if self.normalize_topk:
                 topk_weights = topk_weights / (
                     torch.sum(topk_weights, dim=-1, keepdim=True) + self.epsilon
@@ -1114,7 +736,6 @@ class FFNExperts(ExtendableAddon):
                     .unsqueeze(-1)
                     .repeat(1, 1, self.d_bottleneck, self.d_out)
                 )
-                # check for dtype here, changes to float32
                 active_layer2 = (
                     torch.gather(layer2_expanded, 1, topk_indices_layer2_expanded)
                     # * topk_weights[:, :, None, None]
@@ -1131,7 +752,6 @@ class FFNExperts(ExtendableAddon):
                 ).view(
                     -1, self.d_bottleneck, self.d_out
                 )  # (..., d_bottleneck, d_out)
-            # how is  output_hidden back in bfloat16?
             if self.use_input_gate:
                 inner_activations = self.activation_fn(
                     torch.matmul(input_hidden, active_layer1)
@@ -1147,31 +767,6 @@ class FFNExperts(ExtendableAddon):
                     active_layer2,
                 )  # (..., seq_len, d_out)
             if self.topk_value is not None:
-                # do layer norms according to topk_indices from self.output_layer_norms
-                if self.layer_norm_position == "after":
-                    # unsqueeze for seq dim
-                    output_layer_norm_weight = torch.gather(
-                        self.output_layer_norm_weight.unsqueeze(0).repeat(bs, 1, 1),
-                        1,
-                        topk_indices.unsqueeze(-1).repeat(1, 1, self.d_out),
-                    ).unsqueeze(-2)
-                    output_layer_norm_bias = torch.gather(
-                        self.output_layer_norm_bias.unsqueeze(0).repeat(bs, 1, 1),
-                        1,
-                        topk_indices.unsqueeze(-1).repeat(1, 1, self.d_out),
-                    ).unsqueeze(-2)
-                    # normalize ouput_hidden with above terms
-                    output_hidden_mean = torch.mean(output_hidden, dim=-1, keepdim=True)
-                    output_hidden_var = torch.mean(
-                        (output_hidden - output_hidden_mean) ** 2, dim=-1, keepdim=True
-                    )
-                    output_hidden = (output_hidden - output_hidden_mean) / torch.sqrt(
-                        output_hidden_var + self.epsilon
-                    )
-                    output_hidden = (
-                        output_hidden * output_layer_norm_weight
-                        + output_layer_norm_bias
-                    )
                 if self.residual_connection:
                     output_hidden = output_hidden + input_hidden
                 # weight output_hiddens according to topk_weights
@@ -1180,17 +775,6 @@ class FFNExperts(ExtendableAddon):
                 # output_hidden: (...,topk_value, seq_len, d_out)
                 output_hidden = torch.sum(output_hidden, dim=1)  # (..., seq_len, d_out)
             else:
-                if self.layer_norm_position == "after":
-                    output_hidden_mean = torch.mean(output_hidden, dim=-1, keepdim=True)
-                    output_hidden_var = torch.mean(
-                        (output_hidden - output_hidden_mean) ** 2, dim=-1, keepdim=True
-                    )
-                    output_hidden = (output_hidden - output_hidden_mean) / torch.sqrt(
-                        output_hidden_var + self.epsilon
-                    )
-                    output_hidden = output_hidden * self.output_layer_norm_weight.mean(
-                        dim=0
-                    ) + self.output_layer_norm_bias.mean(dim=0)
                 if self.residual_connection:
                     output_hidden = output_hidden + input_hidden
         if self.divide_by_d_bottleneck:
@@ -1204,6 +788,7 @@ class FFNExperts(ExtendableAddon):
     def pre_forward(self, hidden_states, *args, **kwargs):
         routing_weights = self.global_hidden_dict[self.read_routing_weights_key]
         if self.replace_with_weighted_hiddens:
+            # need this to get weighted hiddens for average activation baseline
             overwrite_key = self.moe_link.router.read_hidden_key
             if "pre_expose_hiddens" in overwrite_key:
                 self.global_hidden_dict[overwrite_key] = hidden_states
@@ -1215,6 +800,7 @@ class FFNExperts(ExtendableAddon):
             if self.learn_input_gate == "only_sigmoid":
                 input_gate = input_gate_probs
             else:
+                # learning input gate with gumbel softmax
                 if self.training:
                     U = torch.rand(
                         input_gate_probs.shape, device=input_gate_probs.device
@@ -1276,50 +862,11 @@ class FFNExperts(ExtendableAddon):
                     module_hidden = module_outputs[0]
                 else:
                     module_hidden = module_outputs
-                if self.replace_weighted_hiddens_type == "variance":
-                    if self.debug:
-                        weights = torch.var(expert_hidden, dim=-1) / torch.var(
-                            module_hidden, dim=-1
-                        )
-                        encoder_mask = self.global_hidden_dict[
-                            ("mask", "prepare_mask", "encoder")
-                        ]
-                        if weights.shape[1] == encoder_mask.shape[1]:
-                            weights[encoder_mask == 0] = 0
-                        print(f"weights: {weights[0]}")
-                        print(
-                            f"first example: {[self.global_hidden_dict['example_first'][i] if i < len(self.global_hidden_dict['example_first']) else 'EOS' for i in torch.sort(weights[0], descending=True)[1][0:20]]}"
-                        )
-                        print(
-                            f"last example: {[self.global_hidden_dict['example_last'][i] if i < len(self.global_hidden_dict['example_last']) else 'EOS' for i in torch.sort(weights[-1], descending=True)[1][0:20]]}"
-                        )
-                        import ipdb
-
-                        ipdb.set_trace()
-                    else:
-                        weights = torch.var(expert_hidden, dim=-1) / torch.var(
-                            module_hidden, dim=-1
-                        )
-                elif (
-                    self.replace_weighted_hiddens_type
-                    and "outgate_learned" in self.replace_weighted_hiddens_type
-                ):
-                    output_gate_scores = torch.sum(
-                        output_hidden * self.expert_output_gate, dim=-1
-                    )
-                    weights = torch.sigmoid(output_gate_scores)
-                    if "with_st" in self.replace_weighted_hiddens_type:
-                        weights = torch.where(
-                            weights < 0.5,
-                            torch.zeros_like(weights),
-                            torch.ones_like(weights),
-                        )
-                else:
-                    weights = torch.ones(
-                        expert_hidden.shape[0],
-                        expert_hidden.shape[1],
-                        device=expert_hidden.device,
-                    )
+                weights = torch.ones(
+                    expert_hidden.shape[0],
+                    expert_hidden.shape[1],
+                    device=expert_hidden.device,
+                )
 
                 if (
                     self.global_hidden_dict[("mask", "prepare_mask", "encoder")].shape[
@@ -1332,16 +879,6 @@ class FFNExperts(ExtendableAddon):
                         == 0
                     ] = 0
                 weights = weights / (torch.sum(weights, dim=-1, keepdim=True) + 1e-6)
-                if self.debug:
-                    print(
-                        f"first example: {[self.global_hidden_dict['example_first'][i] if i < len(self.global_hidden_dict['example_first']) else 'EOS' for i in torch.sort(weights[0], descending=True)[1][0:20]]}"
-                    )
-                    print(
-                        f"last example: {[self.global_hidden_dict['example_last'][i] if i < len(self.global_hidden_dict['example_last']) else 'EOS' for i in torch.sort(weights[-1], descending=True)[1][0:20]]}"
-                    )
-                    import ipdb
-
-                    ipdb.set_trace()
                 overwrite_key = self.moe_link.router.read_hidden_key
                 if "pre_expose_hiddens" in overwrite_key:
                     input_hidden = self.global_hidden_dict[overwrite_key]
@@ -1349,98 +886,6 @@ class FFNExperts(ExtendableAddon):
                         weights.unsqueeze(-1) * input_hidden, dim=1
                     )
                     self.global_hidden_dict[overwrite_key] = weighted_hidden
-
-            if self.learn_output_gate is not None:
-                output_gate_scores = torch.sum(
-                    output_hidden * self.expert_output_gate, dim=-1
-                )
-                output_gate_probs = torch.sigmoid(output_gate_scores)
-                if self.training:
-                    U = torch.rand(
-                        output_gate_probs.shape, device=output_gate_probs.device
-                    )
-                    output_gate_modified_scores = torch.log(
-                        output_gate_probs + self.epsilon
-                    ) + (-torch.log(-torch.log(U + self.epsilon) + self.epsilon))
-                    current_step = self.global_hidden_dict["current_step"] + 1
-                    anneal_step = self.moe_link.router.anneal_step
-                    temperature_schedule = self.moe_link.router.temperature_schedule
-                    if current_step in temperature_schedule:
-                        self.temperature = temperature_schedule[current_step]
-                    self.global_hidden_dict[
-                        ("temperature", "router", "curr_temp")
-                    ] = torch.tensor(self.temperature)
-                    output_gate = torch.sigmoid(
-                        output_gate_modified_scores / self.temperature
-                    )
-                    if self.learn_output_gate == "with_st":
-                        # straight-through estimator
-                        output_gate_onehot = torch.where(
-                            output_gate < 0.5,
-                            torch.zeros_like(output_gate),
-                            torch.ones_like(output_gate),
-                        )
-                        output_gate = (
-                            output_gate_onehot - output_gate.detach() + output_gate
-                        )
-                    if self.learn_output_gate == "with_entropy":
-                        entropy_penalty_loss = -(
-                            output_gate * torch.log(output_gate + self.epsilon)
-                            + (1 - output_gate)
-                            * torch.log(1 - output_gate + self.epsilon)
-                        )
-                        entropy_penalty_loss = entropy_penalty_loss.mean()
-                        entropy_penalty_loss = (
-                            entropy_penalty_loss
-                            * self.moe_link.router.entropy_penalty_weight
-                        )
-                        if (
-                            self.moe_link.router.write_entropy_penalty_key
-                            in self.global_hidden_dict
-                        ):
-                            self.global_hidden_dict[
-                                self.moe_link.router.write_entropy_penalty_key
-                            ].append(entropy_penalty_loss)
-                        else:
-                            self.global_hidden_dict[
-                                self.moe_link.router.write_entropy_penalty_key
-                            ] = [entropy_penalty_loss]
-                else:
-                    if self.debug:
-                        encoder_mask = self.global_hidden_dict[
-                            ("mask", "prepare_mask", "encoder")
-                        ]
-                        if output_gate_probs.shape[1] == encoder_mask.shape[1]:
-                            output_gate_probs[encoder_mask == 0] = 0
-                        if self.learn_output_gate == "with_st":
-                            output_gate_probs = torch.where(
-                                output_gate_probs < 0.5,
-                                torch.zeros_like(output_gate_probs),
-                                torch.ones_like(output_gate_probs),
-                            )
-                        print(f"shape: {output_gate_probs.shape}")
-                        print(f"probs: {output_gate_probs[0]}")
-                        print(
-                            f"sparsity percentage: {round(torch.sum(output_gate_probs == 0).item() / output_gate_probs.numel(), 2)}"
-                        )
-                        print(
-                            f"first example: {[self.global_hidden_dict['example_first'][i] if i < len(self.global_hidden_dict['example_first']) else 'EOS' for i in torch.sort(output_gate_probs[0], descending=True)[1][0:20]]}"
-                        )
-                        print(
-                            f"last example: {[self.global_hidden_dict['example_last'][i] if i < len(self.global_hidden_dict['example_last']) else 'EOS' for i in torch.sort(output_gate_probs[-1], descending=True)[1][0:20]]}"
-                        )
-                        import ipdb
-
-                        ipdb.set_trace()
-                    if self.learn_output_gate == "with_st":
-                        output_gate = torch.where(
-                            output_gate_probs < 0.5,
-                            torch.zeros_like(output_gate_probs),
-                            torch.ones_like(output_gate_probs),
-                        )
-                    else:
-                        output_gate = output_gate_probs
-                    output_hidden = output_hidden * output_gate.unsqueeze(-1)
 
             if isinstance(module_outputs, tuple):
                 return (

@@ -32,7 +32,6 @@ from src.procedures.utils.optimizer_scheduler import get_optimizer, get_schedule
         "save_model_moma_calls",
         "finish_moma_calls",
         "pass_current_step",
-        "stiefel",
     ],
 )
 class Trainer(Procedure):
@@ -56,7 +55,6 @@ class Trainer(Procedure):
         save_model_moma_calls=[],
         finish_moma_calls=[],
         pass_current_step=False,
-        stiefel=False,
         *args,
         **kwargs,
     ):
@@ -87,7 +85,6 @@ class Trainer(Procedure):
 
         self.current_step = 0
         self.pass_current_step = pass_current_step
-        self.stiefel = stiefel
 
         if self.save_model_step_interval is not None and save_model_moma_calls == []:
             raise NotImplementedError()
@@ -131,75 +128,6 @@ class Trainer(Procedure):
             passing_global_hiddens["current_step"] = self.current_step
         return passing_global_hiddens
 
-    def _update_router(self, update_gradient=True):
-        # update gradient to make it orthogonal to frozen expert embeddings
-        def gram_schmidt(vectors):
-            basis = []
-            for v in vectors:
-                w = v - sum(torch.dot(v, u) / torch.dot(u, u) * u for u in basis)
-                if torch.norm(w) > 1e-6:  # Avoid adding zero-length vectors
-                    basis.append(w)
-            return basis
-
-        regex_pattern = r"(.*)__(\d+)$"
-        grouped_params = {}
-
-        for key, param in self.model.torch_model.named_parameters():
-            if "expert_embeddings" in key:
-                match = re.match(regex_pattern, key)
-                if match:
-                    prefix = match.group(1)
-                    index = match.group(2)
-                    if prefix not in grouped_params:
-                        grouped_params[prefix] = {}
-                    grouped_params[prefix][index] = param
-        update = {}
-        for prefix in grouped_params:
-            other_vectors = []
-            original_vector = None
-            original_vector_key_name = None
-            for index in grouped_params[prefix]:
-                key_name = f"{prefix}__{index}"
-                param = grouped_params[prefix][index]
-                if param.grad is None:
-                    other_vectors.append(param.data.float())
-                else:
-                    if update_gradient:
-                        original_vector = param.grad
-                    else:
-                        original_vector = param.data.float()
-                    original_vector_key_name = key_name
-            basis = gram_schmidt(other_vectors)
-            orthogonal_subspace_vector = original_vector - sum(
-                torch.dot(original_vector, u) / torch.dot(u, u) * u for u in basis
-            )
-            update[original_vector_key_name] = orthogonal_subspace_vector
-        for key, param in self.model.torch_model.named_parameters():
-            if key in update:
-                # print(f"updating {key}")
-                if update_gradient:
-                    param.grad = update[key]
-                else:
-                    param.data = update[key]
-        # group expert_embeddings to form a matrix and call it W
-        # group grad of expert_embeddings to form a matrix and call it G
-        # # check for infs and NaNs and if so don't update
-        # for name, param in named_trainable_parameters:
-        #     if "expert_embeddings" in name and param.grad is not None:
-        # A = G@W - W@G
-        # U = A@W
-        # def matrix_norm_one(W):
-        #     out = torch.abs(W)
-        #     out = torch.sum(out, dim=0)
-        #     out = torch.max(out)
-        #     return out
-        # tau = min(lr, 1/matrix_norm_one(W))
-        # Y = W - tau*U
-        # for i in range(1,3):
-        #     Y = W - tau * 0.5 * A @ (W + Y)
-        # # uncouple Y to expert_embeddings
-        # return Y
-
     def run(self):
         best_result = None
         logging.print_single_bar()
@@ -241,15 +169,11 @@ class Trainer(Procedure):
             )
             for moma_call in self.step_moma_calls:
                 moma_call(self.model)
-            if self.stiefel:
-                self._update_router(update_gradient=True)
             if self.loss_scaler is not None:
                 self.loss_scaler.step(self.optimizer)
                 self.loss_scaler.update()
             else:
                 self.optimizer.step()
-            if self.stiefel:
-                self._update_router(update_gradient=False)
             if self.scheduler is not None:
                 self.scheduler.step()
             self.current_step += 1

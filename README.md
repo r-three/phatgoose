@@ -14,9 +14,9 @@ Follow these steps to set up the PHATGOOSE environment:
 
 2. **Install Required Packages**:
    ```shell
+   source colm/setup.sh
    pip install -r requirements.txt
    pip install -r requirements-dev.txt
-   source colm/setup.sh
    ```
 
 ## Training Procedure

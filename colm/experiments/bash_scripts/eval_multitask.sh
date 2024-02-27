@@ -64,8 +64,8 @@ else
   exit 1
 fi
 
-echo -e "\nEval on p3 datasets\n"
-echo -e "SMEAR variant is score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
+echo -e "\nRunning Eval\n"
+echo -e "score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
 
 # Use the variables directly in the command
 EXP_NAME=${EXP_NAME} python src/launch_single_process.py --gin_files colm/datasets/p3_${MODEL_TYPE}.gin colm/datasets/flanv2_${MODEL_TYPE}.gin colm/datasets/bigbench.gin colm/models/${MODEL_TYPE}/t5.gin ${ARCH_GIN} colm/experiments/eval.gin --gin_bindings M/MODEL/Router.score_type=\"${SCORE_TYPE}\" M/MODEL/Router.scaling_scores=${SCALING_SCORES} M/MODEL/Router.elementwise_affine=${ELEMENTWISE_AFFINE} ${EXTRA_BINDINGS}

@@ -67,7 +67,7 @@ if [ -z "$OLD_EXP_NAME" ]; then
 fi
 
 echo -e "\nTrain ${DATASET}\n"
-echo -e "SMEAR variant is score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
+echo -e "score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
 
 echo -e "Using LoRA adapter\n"
 # Use the variables directly in the command

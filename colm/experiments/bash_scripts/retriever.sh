@@ -146,6 +146,6 @@ elif [[ "${CREATE_CHECKPOINT}" == "True" ]]; then
     python scripts/manipulations.py --gin_bindings make_checkpoint_for_retrieval.checkpoint_path=\"${FROM_CHECKPOINT_PATH}\" make_checkpoint_for_retrieval.embeddings_path=\"${READ_DIR}\" make_checkpoint_for_retrieval.out_path=\"${TO_CHECKPOINT_PATH}\" 'func_caller.func=@make_checkpoint_for_retrieval' make_checkpoint_for_retrieval.dataset_length=1000 make_checkpoint_for_retrieval.dataset_dict_str=\"${DATASET_SETTING}\"
 else
     echo -e "\nEvaluating retriever checkpoint\n"
-    echo -e "SMEAR variant is score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
+    echo -e "score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
     EXP_NAME=${TO_CHECKPOINT_PATH} python src/launch_single_process.py --gin_files colm/datasets/p3_${MODEL_TYPE}.gin colm/datasets/flanv2_${MODEL_TYPE}.gin colm/datasets/bigbench.gin colm/models/${MODEL_TYPE}/t5.gin colm/models/${MODEL_TYPE}/moe_lora_retriever.gin  colm/experiments/eval.gin --gin_bindings 'main.procedure_exec_order=["P/EVALUATE/BBH", "P/EVALUATE/HELDOUT"]' 'M/MODEL/Model.init_moma_calls = [@M/MODEL/insert_feature_extractor, @M/MODEL/ENCODER/make_moe, @M/MODEL/DECODER/make_moe, @M/MODEL/load_weights]' M/MODEL/load_weights.weight_path=\"exp_out/${TO_CHECKPOINT_PATH}/best.pt\" 'M/MODEL/Model.pass_batch_input=True' 'M/MODEL/Router.is_retriever=True' M/MODEL/FeatureExtractor.include_answer_choices=\"${INCLUDE_ANSWER_CHOICES}\" ${EXTRA_BINDINGS}
 fi

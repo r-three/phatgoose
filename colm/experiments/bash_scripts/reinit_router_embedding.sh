@@ -92,7 +92,7 @@ else
 fi
 
 
-echo -e "SMEAR variant is score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
+echo -e "score_type: ${SCORE_TYPE}, scaling_scores: ${SCALING_SCORES} elementwise_affine: ${ELEMENTWISE_AFFINE}\n"
 
 # echo -e "\nInsert required keys into the model"
 # python scripts/manipulations.py --gin_bindings create_router_embeddings.path=\"${EXP_NAME}\" 'func_caller.func=@create_router_embeddings' ${REGEX_GIN}

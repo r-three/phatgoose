@@ -18,6 +18,7 @@ Follow these steps to set up the PHATGOOSE environment:
    pip install -r requirements.txt
    pip install -r requirements-dev.txt
    ```
+Run `source colm/setup.sh` each time you initiate an environment to ensure that the environment paths are correctly set.
 
 ## Training Procedure
 Below are the steps for required for PHATGOOSE and other baselines:
@@ -84,12 +85,13 @@ python scripts/manipulations.py --gin_bindings 'average_outer_product_lora_weigh
 ## Models and Datasets
 We provide checkpoints for PHATGOOSE, along with baselines such as Average Activation, Merged Experts, and Retrieval, accessible at our [Hugging Face repository](https://huggingface.co/r-three).
 
-For individual experts, we recommend splitting any checkpoint other than Merged Experts. Each checkpoint contains keys for an expert ending with `layer1__i`, `layer2__i`, indicating the LoRA parameters of the expert `i` trained on dataset `i`. The sequence of datasets is detailed in the [`scripts/concatenate.py` file](scripts/concatenate.py).
+For individual experts, we recommend splitting any checkpoint other than Merged Experts. Each checkpoint contains keys for an expert ending with `layer1__i`, `layer2__i`, indicating the LoRA parameters of the expert `i` trained on dataset `i`. The sequence of datasets is detailed as the `all_dataset_dict` in [`scripts/concatenate.py`](scripts/concatenate.py) file.
 
 Datasets including T0 Held-in and BIG-bench are available through Hugging Face. For the FLAN dataset, we will provide a processed version soon, sourced from the [FLAN dataset on Hugging Face](https://huggingface.co/datasets/Open-Orca/FLAN).
 
 ## Evaluation
 Here are the scripts for evaluating different methods:
+Place the trained checkpoints directory inside the `exp_out` directory by creating one if it does not exist. For example, do `git clone https://huggingface.co/r-three/FLAN_Phatgoose` to get FLAN checkpoint with 166 experts inside `phatgoose/exp_out/`.
 
 ### Multitask
 ```shell
